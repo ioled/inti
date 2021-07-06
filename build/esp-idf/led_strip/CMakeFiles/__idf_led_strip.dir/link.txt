@@ -1,0 +1,2 @@
+/Users/cristian/.espressif/tools/xtensa-esp32-elf/esp-2021r1-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-ar qc libled_strip.a CMakeFiles/__idf_led_strip.dir/led_strip_rmt_ws2812.c.obj
+/Users/cristian/.espressif/tools/xtensa-esp32-elf/esp-2021r1-8.4.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-ranlib libled_strip.a

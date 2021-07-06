@@ -1,0 +1,21 @@
+{
+    "project_name":       "bootloader",
+    "project_path":       "/Users/cristian/esp/esp-idf/components/bootloader/subproject",
+    "build_dir":          "/Users/cristian/Documents/Development/iOLED/firmware/inti/build/bootloader",
+    "config_file":        "/Users/cristian/Documents/Development/iOLED/firmware/inti/sdkconfig",
+    "config_defaults":    "",
+    "app_elf":            "bootloader.elf",
+    "app_bin":            "bootloader.bin",
+    "git_revision":       "v4.4-dev-1849-g8e3e65a47",
+    "target":             "esp32",
+    "rev":                "0",
+    "phy_data_partition": "",
+    "monitor_baud" :      "115200",
+    "monitor_toolprefix": "xtensa-esp32-elf-",
+    "config_environment" : {
+        "COMPONENT_KCONFIGS" : "/Users/cristian/esp/esp-idf/components/efuse/Kconfig;/Users/cristian/esp/esp-idf/components/esp32/Kconfig;/Users/cristian/esp/esp-idf/components/esp_common/Kconfig;/Users/cristian/esp/esp-idf/components/esp_hw_support/Kconfig;/Users/cristian/esp/esp-idf/components/esp_system/Kconfig;/Users/cristian/esp/esp-idf/components/freertos/Kconfig;/Users/cristian/esp/esp-idf/components/hal/Kconfig;/Users/cristian/esp/esp-idf/components/log/Kconfig;/Users/cristian/esp/esp-idf/components/newlib/Kconfig;/Users/cristian/esp/esp-idf/components/spi_flash/Kconfig",
+        "COMPONENT_KCONFIGS_PROJBUILD" : "/Users/cristian/esp/esp-idf/components/bootloader/Kconfig.projbuild;/Users/cristian/esp/esp-idf/components/esp_rom/Kconfig.projbuild;/Users/cristian/esp/esp-idf/components/esptool_py/Kconfig.projbuild;/Users/cristian/esp/esp-idf/components/partition_table/Kconfig.projbuild"
+    },
+    "build_components" : [ "bootloader", "bootloader_support", "efuse", "esp32", "esp_common", "esp_hw_support", "esp_rom", "esp_system", "esptool_py", "freertos", "hal", "log", "main", "micro-ecc", "newlib", "partition_table", "soc", "spi_flash", "xtensa", "" ],
+    "build_component_paths" : [ "/Users/cristian/esp/esp-idf/components/bootloader", "/Users/cristian/esp/esp-idf/components/bootloader_support", "/Users/cristian/esp/esp-idf/components/efuse", "/Users/cristian/esp/esp-idf/components/esp32", "/Users/cristian/esp/esp-idf/components/esp_common", "/Users/cristian/esp/esp-idf/components/esp_hw_support", "/Users/cristian/esp/esp-idf/components/esp_rom", "/Users/cristian/esp/esp-idf/components/esp_system", "/Users/cristian/esp/esp-idf/components/esptool_py", "/Users/cristian/esp/esp-idf/components/freertos", "/Users/cristian/esp/esp-idf/components/hal", "/Users/cristian/esp/esp-idf/components/log", "/Users/cristian/esp/esp-idf/components/bootloader/subproject/main", "/Users/cristian/esp/esp-idf/components/bootloader/subproject/components/micro-ecc", "/Users/cristian/esp/esp-idf/components/newlib", "/Users/cristian/esp/esp-idf/components/partition_table", "/Users/cristian/esp/esp-idf/components/soc", "/Users/cristian/esp/esp-idf/components/spi_flash", "/Users/cristian/esp/esp-idf/components/xtensa", "" ]
+}
