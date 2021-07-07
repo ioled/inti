@@ -22,11 +22,10 @@ static led_strip_t *pStrip_a;
 
 static void init_esp(void)
 {
-    /* Configure the peripheral accordint to the iOLED boars */
     ESP_LOGI(TAG, "Initializing esp32 - iOLED Inti");
 
     /* LED strip initialization with the GPIO and pixels number*/
-    pStrip_a = led_strip_init(0, BLINK_GPIO, 5);
+    pStrip_a = led_strip_init(0, NEOPIXEL_GPIO, NEOPIXEL_NUM_PIXELS);
     /* Set all LED off to clear all pixels */
     pStrip_a->clear(pStrip_a, 50);
 }

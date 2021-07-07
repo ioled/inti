@@ -1,11 +1,14 @@
-ESP-IDF template app
-====================
+<p align="center">
+ <a href="https://www.ioled.cl/"><img src="logo-ioled.png" width="400"></a>
+</p>
 
-This is a template application to be used with [Espressif IoT Development Framework](https://github.com/espressif/esp-idf).
+<img src="https://img.shields.io/badge/-c++-black?logo=c%2B%2B&style=social
+">
 
-Please check [ESP-IDF docs](https://docs.espressif.com/projects/esp-idf/en/latest/get-started/index.html) for getting started instructions.
+# iOLED Inti
 
-*Code in this repository is in the Public Domain (or CC0 licensed, at your option.)
-Unless required by applicable law or agreed to in writing, this
-software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-CONDITIONS OF ANY KIND, either express or implied.*
+
+Este repositorio contiene el firmare de la placa IoT iOLED desarrollado en Espressif IoT Development Framework. El dispositivo se conecta a wifi  y a través del protocolo MQTT recibe y manda mensajes. 
+
+El dispositivo sensa humedad y temperatura con el sensor SHT20 cada 1 minuto. El dispositivo cuenta con un reloj interno: DS3231, 
+que actualiza la hora cada vez que se conecta a internet. El control de intensidad se realiza con un DAC: MCP4725.
