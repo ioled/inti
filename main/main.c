@@ -1,6 +1,7 @@
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "driver/gpio.h"
 
 #include "led_strip.h"
 
@@ -15,6 +16,8 @@
 
 static uint8_t s_led_state = 0;
 static led_strip_t *pStrip_a;
+
+#define INTEGRATED_LED_GPIO 2
 
 static void init_esp(void)
 {   
@@ -33,10 +36,19 @@ static void init_esp(void)
     pStrip_a = led_strip_init(0, NEOPIXEL_GPIO, NEOPIXEL_NUM_PIXELS);
     /* Set all LED off to clear all pixels */
     pStrip_a->clear(pStrip_a, 50);
+
+    ESP_LOGI(TAG, "Initializing integrated led in pin %d:", INTEGRATED_LED_GPIO);
+    gpio_reset_pin(INTEGRATED_LED_GPIO);
+    /* Set the GPIO as a push/pull output */
+    gpio_set_direction(INTEGRATED_LED_GPIO, GPIO_MODE_OUTPUT);
 }
 
 static void blink_led(void)
-{
+{   
+
+    /* Set the GPIO level according to the state (LOW or HIGH)*/
+    gpio_set_level(INTEGRATED_LED_GPIO, s_led_state);
+
     /* If the addressable LED is enabled */
     if (s_led_state) {
         /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
@@ -62,7 +74,8 @@ void app_main(void)
 
     ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
     wifi_init_sta();
-    obtain_time();
+    // TODO: we should obtain time here, but obtain time is not fully integrated yet.
+    // obtain_time();
 
     while (1) {
         ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
