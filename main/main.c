@@ -10,8 +10,8 @@
 #include "lwip/sys.h"
 
 #include "constants.c"
-
 #include "wifi.c"
+#include "sntp.c"
 
 static uint8_t s_led_state = 0;
 static led_strip_t *pStrip_a;
@@ -62,10 +62,11 @@ void app_main(void)
 
     ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
     wifi_init_sta();
+    obtain_time();
 
     while (1) {
         ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
-        blink_led("Buscando ");
+        blink_led();
         /* Toggle the LED state */
         s_led_state = !s_led_state;
         vTaskDelay(1000 / portTICK_PERIOD_MS);
