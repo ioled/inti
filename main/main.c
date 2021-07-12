@@ -13,11 +13,11 @@
 #include "constants.c"
 #include "wifi.c"
 #include "sntp.c"
+#include "google-iot-core.c"
+
 
 static uint8_t s_led_state = 0;
 static led_strip_t *pStrip_a;
-
-#define INTEGRATED_LED_GPIO 2
 
 static void init_esp(void)
 {   
@@ -76,6 +76,8 @@ void app_main(void)
     wifi_init_sta();
     // TODO: we should obtain time here, but obtain time is not fully integrated yet.
     // obtain_time();
+    
+    xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
 
     while (1) {
         ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");

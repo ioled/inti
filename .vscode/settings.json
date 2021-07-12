@@ -7,7 +7,8 @@
         "freertos.h": "c",
         "string.h": "c",
         "esp_event.h": "c",
-        "task.h": "c"
+        "task.h": "c",
+        "err.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "workbench.colorCustomizations": {
