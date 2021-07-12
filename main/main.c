@@ -47,7 +47,8 @@ static void blink_led(void)
 {   
 
     /* Set the GPIO level according to the state (LOW or HIGH)*/
-    gpio_set_level(INTEGRATED_LED_GPIO, s_led_state);
+    // TODO: eliminate this
+    // gpio_set_level(INTEGRATED_LED_GPIO, s_led_state);
 
     /* If the addressable LED is enabled */
     if (s_led_state) {

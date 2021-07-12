@@ -59,16 +59,16 @@ void iotc_mqttlogic_subscribe_callback(
         memcpy(sub_message, params->message.temporary_payload_data, params->message.temporary_payload_data_length);
         sub_message[params->message.temporary_payload_data_length] = '\0';
         ESP_LOGI(TAG, "Message Payload: %s ", sub_message);
-        if (strcmp(subscribe_topic_command, params->message.topic) == 0) {
-            int value;
-            sscanf(sub_message, "{\"outlet\": %d}", &value);
-            ESP_LOGI(TAG, "value: %d", value);
-            if (value == 1) {
-                gpio_set_level(INTEGRATED_LED_GPIO, true);
-            } else if (value == 0) {
-                gpio_set_level(INTEGRATED_LED_GPIO, false);
-            }
+
+        int value;
+        sscanf(sub_message, "{\"outlet\": %d}", &value);
+        ESP_LOGI(TAG, "value: %d", value);
+        if (value == 1) {
+            gpio_set_level(INTEGRATED_LED_GPIO, true);
+        } else if (value == 0) {
+            gpio_set_level(INTEGRATED_LED_GPIO, false);
         }
+        
         free(sub_message);
     }
 }
