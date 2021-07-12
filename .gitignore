@@ -4,3 +4,5 @@ sdkconfig.old
 
 .vscode
 /main/certs
+
+*.pem
