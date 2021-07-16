@@ -41,6 +41,11 @@ static void init_esp(void)
     gpio_reset_pin(INTEGRATED_LED_GPIO);
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(INTEGRATED_LED_GPIO, GPIO_MODE_OUTPUT);
+
+    ESP_LOGI(TAG, "Initializing relay in pin %d:", RELAY_GPIO);
+    gpio_reset_pin(RELAY_GPIO);
+    /* Set the GPIO as a push/pull output */
+    gpio_set_direction(RELAY_GPIO, GPIO_MODE_OUTPUT);
 }
 
 static void blink_led(void)

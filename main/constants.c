@@ -4,3 +4,6 @@ static const char *TAG = "iOLED Inti v0.2.0";
 #define NEOPIXEL_NUM_PIXELS 5
 
 #define INTEGRATED_LED_GPIO 2
+
+#define RELAY_GPIO 13
+
