@@ -12,7 +12,7 @@ extern const uint8_t ec_pv_key_end[] asm("_binary_private_key_pem_end");
 #define SUBSCRIBE_TOPIC_CONFIG "/devices/%s/config"
 #define PUBLISH_TOPIC_EVENT "/devices/%s/events"
 #define PUBLISH_TOPIC_STATE "/devices/%s/state"
-#define TEMPERATURE_DATA "{temp : %d}"
+#define TEMPERATURE_DATA "{\"hum\": 11, \"temp\": 9.0}"
 #define MIN_TEMP 20
 
 char *subscribe_topic_command, *subscribe_topic_config;
@@ -29,12 +29,12 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     IOTC_UNUSED(user_data);
 
     char *publish_topic = NULL;
-    asprintf(&publish_topic, PUBLISH_TOPIC_EVENT, CONFIG_GIOT_DEVICE_ID);
+    asprintf(&publish_topic, PUBLISH_TOPIC_STATE, CONFIG_GIOT_DEVICE_ID);
     char *publish_message = NULL;
-    asprintf(&publish_message, TEMPERATURE_DATA, MIN_TEMP + rand() % 10);
-    ESP_LOGI(TAG, "publishing msg \"%s\" to topic: \"%s\"", publish_message, publish_topic);
+    // asprintf(&publish_message, TEMPERATURE_DATA, MIN_TEMP + rand() % 10);
+    ESP_LOGI(TAG, "publishing msg \"%s\" to topic: \"%s\"", TEMPERATURE_DATA, publish_topic);
 
-    iotc_publish(context_handle, publish_topic, publish_message,
+    iotc_publish(context_handle, publish_topic, TEMPERATURE_DATA,
                  iotc_example_qos,
                  /*callback=*/NULL, /*user_data=*/NULL);
     free(publish_topic);
@@ -74,7 +74,6 @@ void iotc_mqttlogic_subscribe_callback(
             }
             goto end;
         }
-        // char *string = cJSON_Print(json);
 
         cJSON *esp = cJSON_GetObjectItemCaseSensitive(json, "esp");
         

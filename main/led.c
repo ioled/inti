@@ -35,10 +35,11 @@ void example_ledc_init(void)
 void change_led(float percent)
 {   
     if (percent > 0) {
+        // Turn on relay
         gpio_set_level(RELAY_GPIO, true);
 
         // Set duty to 50%
-        ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, 8000));
+        ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, 4192));
         // Update duty to apply the new value
         ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
     } else {
