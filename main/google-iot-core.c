@@ -1,5 +1,6 @@
 #include <iotc.h>
 #include <iotc_jwt.h>
+#include "cJSON.c"
 
 extern const uint8_t ec_pv_key_start[] asm("_binary_private_key_pem_start");
 extern const uint8_t ec_pv_key_end[] asm("_binary_private_key_pem_end");
@@ -60,15 +61,41 @@ void iotc_mqttlogic_subscribe_callback(
         sub_message[params->message.temporary_payload_data_length] = '\0';
         ESP_LOGI(TAG, "Message Payload: %s ", sub_message);
 
-        int value;
-        sscanf(sub_message, "{\"outlet\": %d}", &value);
-        ESP_LOGI(TAG, "value: %d", value);
-        if (value == 1) {
-            change_led(1);
-        } else if (value == 0) {
-            change_led(0);
+        char* str = NULL;
+        float percent;
+
+        cJSON *json = cJSON_Parse(sub_message);
+        if (json == NULL)
+        {
+            const char *error_ptr = cJSON_GetErrorPtr();
+            if (error_ptr != NULL)
+            {
+                fprintf(stderr, "Error before: %s\n", error_ptr);
+            }
+            goto end;
         }
+        // char *string = cJSON_Print(json);
+
+        cJSON *esp = cJSON_GetObjectItemCaseSensitive(json, "esp");
         
+        cJSON *led1 = cJSON_GetObjectItemCaseSensitive(esp, "led1");
+        
+        cJSON *duty = cJSON_GetObjectItemCaseSensitive(led1, "duty");
+
+        str = cJSON_Print(duty);
+        ESP_LOGI(TAG, "duty: %s ", str);
+
+        percent = duty->valuedouble;
+
+        if (percent > 0) {
+            ESP_LOGI(TAG, "entro en valor sobre 0");
+            change_led(percent);
+        } else if (percent == 0) {
+            ESP_LOGI(TAG, "entro en valor 0");
+            change_led(percent);
+        }
+        end: 
+            cJSON_Delete(json);                
         free(sub_message);
     }
 }

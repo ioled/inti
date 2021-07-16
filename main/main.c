@@ -46,6 +46,9 @@ static void init_esp(void)
     gpio_reset_pin(RELAY_GPIO);
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(RELAY_GPIO, GPIO_MODE_OUTPUT);
+
+    ESP_LOGI(TAG, "Initializing signal led in pin %d:", SIGNAL_LED_GPIO);
+    example_ledc_init();
 }
 
 static void blink_led(void)

@@ -7,3 +7,6 @@ static const char *TAG = "iOLED Inti v0.2.0";
 
 #define RELAY_GPIO 13
 
+#define SIGNAL_LED_GPIO 4
+
+
