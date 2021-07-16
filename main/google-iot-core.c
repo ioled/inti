@@ -64,11 +64,9 @@ void iotc_mqttlogic_subscribe_callback(
         sscanf(sub_message, "{\"outlet\": %d}", &value);
         ESP_LOGI(TAG, "value: %d", value);
         if (value == 1) {
-            gpio_set_level(INTEGRATED_LED_GPIO, true);
-            gpio_set_level(RELAY_GPIO, true);
+            change_led(1);
         } else if (value == 0) {
-            gpio_set_level(INTEGRATED_LED_GPIO, false);
-            gpio_set_level(RELAY_GPIO, false);
+            change_led(0);
         }
         
         free(sub_message);

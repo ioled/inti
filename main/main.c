@@ -13,8 +13,8 @@
 #include "constants.c"
 #include "wifi.c"
 #include "sntp.c"
+#include "led.c"
 #include "google-iot-core.c"
-
 
 static uint8_t s_led_state = 0;
 static led_strip_t *pStrip_a;
