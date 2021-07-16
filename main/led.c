@@ -39,7 +39,8 @@ void change_led(float percent)
         gpio_set_level(RELAY_GPIO, true);
 
         // Set duty to 50%
-        ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, 4192));
+        float percent_to_binary = percent * 8191;
+        ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, (int)percent_to_binary));
         // Update duty to apply the new value
         ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
     } else {
