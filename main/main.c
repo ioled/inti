@@ -83,7 +83,6 @@ void app_main(void)
 
     ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
     wifi_init_sta();
-    // TODO: we should obtain time here, but obtain time is not fully integrated yet.
     obtain_time();
     
     xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);

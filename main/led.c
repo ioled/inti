@@ -7,6 +7,10 @@
 #define LEDC_DUTY               (4095) // Set duty to 50%. ((2 ** 13) - 1) * 50% = 4095
 #define LEDC_FREQUENCY          (5000) // Frequency in Hertz. Set frequency at 5 kHz
 
+#define RELAY_GPIO 13
+
+#define SIGNAL_LED_GPIO 4
+
 void example_ledc_init(void)
 {
     // Prepare and then apply the LEDC PWM timer configuration

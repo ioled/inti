@@ -32,7 +32,7 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     asprintf(&publish_topic, PUBLISH_TOPIC_STATE, CONFIG_GIOT_DEVICE_ID);
     char *publish_message = NULL;
     // asprintf(&publish_message, TEMPERATURE_DATA, MIN_TEMP + rand() % 10);
-    ESP_LOGI(TAG, "publishing msg \"%s\" to topic: \"%s\"", TEMPERATURE_DATA, publish_topic);
+    ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"", TEMPERATURE_DATA, publish_topic);
 
     iotc_publish(context_handle, publish_topic, TEMPERATURE_DATA,
                  iotc_example_qos,
@@ -108,18 +108,18 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
     /* IOTC_CONNECTION_STATE_OPENED means that the connection has been
        established and the IoTC Client is ready to send/recv messages */
     case IOTC_CONNECTION_STATE_OPENED:
-        ESP_LOGI(TAG, "connected!");
+        ESP_LOGI(TAG, "Connected!");
 
         /* Publish immediately upon connect. 'publish_function' is defined
            in this example file and invokes the IoTC API to publish a
            message. */
         asprintf(&subscribe_topic_command, SUBSCRIBE_TOPIC_COMMAND, CONFIG_GIOT_DEVICE_ID);
-        ESP_LOGI(TAG, "subscribing to topic: \"%s\"", subscribe_topic_command);
+        ESP_LOGI(TAG, "Subscribing to topic: \"%s\"", subscribe_topic_command);
         iotc_subscribe(in_context_handle, subscribe_topic_command, IOTC_MQTT_QOS_AT_LEAST_ONCE,
                        &iotc_mqttlogic_subscribe_callback, /*user_data=*/NULL);
 
         asprintf(&subscribe_topic_config, SUBSCRIBE_TOPIC_CONFIG, CONFIG_GIOT_DEVICE_ID);
-        ESP_LOGI(TAG, "subscribing to topic: \"%s\"", subscribe_topic_config);
+        ESP_LOGI(TAG, "Subscribing to topic: \"%s\"", subscribe_topic_config);
         iotc_subscribe(in_context_handle, subscribe_topic_config, IOTC_MQTT_QOS_AT_LEAST_ONCE,
                        &iotc_mqttlogic_subscribe_callback, /*user_data=*/NULL);
 
