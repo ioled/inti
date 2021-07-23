@@ -41,7 +41,7 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     free(publish_message);
 }
 
-void iotc_mqttlogic_subscribe_callback(
+void iotc_mqttlogic_subscribe_config_callback(
     iotc_context_handle_t in_context_handle, iotc_sub_call_type_t call_type,
     const iotc_sub_call_params_t *const params, iotc_state_t state,
     void *user_data)
@@ -94,6 +94,51 @@ void iotc_mqttlogic_subscribe_callback(
     }
 }
 
+void iotc_mqttlogic_subscribe_commands_callback(
+    iotc_context_handle_t in_context_handle, iotc_sub_call_type_t call_type,
+    const iotc_sub_call_params_t *const params, iotc_state_t state,
+    void *user_data)
+{
+    IOTC_UNUSED(in_context_handle);
+    IOTC_UNUSED(call_type);
+    IOTC_UNUSED(state);
+    IOTC_UNUSED(user_data);
+    if (params != NULL && params->message.topic != NULL) {
+        ESP_LOGI(TAG, "Subscription Topic: %s", params->message.topic);
+        char *sub_message = (char *)malloc(params->message.temporary_payload_data_length + 1);
+        if (sub_message == NULL) {
+            ESP_LOGE(TAG, "Failed to allocate memory");
+            return;
+        }
+        memcpy(sub_message, params->message.temporary_payload_data, params->message.temporary_payload_data_length);
+        sub_message[params->message.temporary_payload_data_length] = '\0';
+        ESP_LOGI(TAG, "Message Payload: %s ", sub_message);
+
+        char* str = NULL;
+
+        // Parse data from IoT Core. Go to end if receive null from IoT Core
+        cJSON *json = cJSON_Parse(sub_message);
+        if (json == NULL)
+        {
+            const char *error_ptr = cJSON_GetErrorPtr();
+            if (error_ptr != NULL)
+            {
+                ESP_LOGI(TAG, "Reciving null message from IoT Core");
+            }
+            goto end;
+        }
+
+        cJSON *command = cJSON_GetObjectItemCaseSensitive(json, "command");
+        
+        str = cJSON_Print(command);
+        ESP_LOGI(TAG, "command: %s ", str);
+    
+        end: 
+            cJSON_Delete(json);                
+        free(sub_message);
+    }
+}
+
 void on_connection_state_changed(iotc_context_handle_t in_context_handle,
                                  void *data, iotc_state_t state)
 {
@@ -111,12 +156,12 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
         asprintf(&subscribe_topic_command, SUBSCRIBE_TOPIC_COMMAND, CONFIG_GIOT_DEVICE_ID);
         ESP_LOGI(TAG, "Subscribing to topic: \"%s\"", subscribe_topic_command);
         iotc_subscribe(in_context_handle, subscribe_topic_command, IOTC_MQTT_QOS_AT_LEAST_ONCE,
-                       &iotc_mqttlogic_subscribe_callback, /*user_data=*/NULL);
+                       &iotc_mqttlogic_subscribe_commands_callback, /*user_data=*/NULL);
 
         asprintf(&subscribe_topic_config, SUBSCRIBE_TOPIC_CONFIG, CONFIG_GIOT_DEVICE_ID);
         ESP_LOGI(TAG, "Subscribing to topic: \"%s\"", subscribe_topic_config);
         iotc_subscribe(in_context_handle, subscribe_topic_config, IOTC_MQTT_QOS_AT_LEAST_ONCE,
-                       &iotc_mqttlogic_subscribe_callback, /*user_data=*/NULL);
+                       &iotc_mqttlogic_subscribe_config_callback, /*user_data=*/NULL);
 
         /* Create a timed task to publish every 10 seconds. */
         delayed_publish_task = iotc_schedule_timed_task(in_context_handle,
