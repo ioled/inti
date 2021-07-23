@@ -62,15 +62,16 @@ void iotc_mqttlogic_subscribe_callback(
         ESP_LOGI(TAG, "Message Payload: %s ", sub_message);
 
         char* str = NULL;
-        float percent;
+        float percent_from_iot_core;
 
+        // Parse data from IoT Core. Go to end if receive null from IoT Core
         cJSON *json = cJSON_Parse(sub_message);
         if (json == NULL)
         {
             const char *error_ptr = cJSON_GetErrorPtr();
             if (error_ptr != NULL)
             {
-                fprintf(stderr, "Error before: %s\n", error_ptr);
+                ESP_LOGI(TAG, "Reciving null message from IoT Core");
             }
             goto end;
         }
@@ -84,15 +85,9 @@ void iotc_mqttlogic_subscribe_callback(
         str = cJSON_Print(duty);
         ESP_LOGI(TAG, "duty: %s ", str);
 
-        percent = duty->valuedouble;
+        percent_from_iot_core = duty->valuedouble;
 
-        if (percent > 0) {
-            ESP_LOGI(TAG, "entro en valor sobre 0");
-            change_led(percent);
-        } else if (percent == 0) {
-            ESP_LOGI(TAG, "entro en valor 0");
-            change_led(percent);
-        }
+        apply_led_percent(percent_from_iot_core);
         end: 
             cJSON_Delete(json);                
         free(sub_message);
@@ -108,7 +103,7 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
     /* IOTC_CONNECTION_STATE_OPENED means that the connection has been
        established and the IoTC Client is ready to send/recv messages */
     case IOTC_CONNECTION_STATE_OPENED:
-        ESP_LOGI(TAG, "Connected!");
+        ESP_LOGI(TAG, "Connected to IoT Core");
 
         /* Publish immediately upon connect. 'publish_function' is defined
            in this example file and invokes the IoTC API to publish a
@@ -169,7 +164,7 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
                in this example. */
             iotc_events_stop();
         } else {
-            ESP_LOGE(TAG, "connection closed - reason %d!", state);
+            ESP_LOGE(TAG, "Connection closed - reason %d!", state);
             /* The disconnection was unforeseen.  Try reconnect to the server
             with previously set configuration, which has been provided
             to this callback in the conn_data structure. */
@@ -181,7 +176,7 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
         break;
 
     default:
-        ESP_LOGE(TAG, "incorrect connection state value.");
+        ESP_LOGE(TAG, "Incorrect connection state value.");
         break;
     }
 }
@@ -201,7 +196,7 @@ static void mqtt_task(void *pvParameters)
     const iotc_state_t error_init = iotc_initialize();
 
     if (IOTC_STATE_OK != error_init) {
-        ESP_LOGE(TAG, " iotc failed to initialize, error: %d", error_init);
+        ESP_LOGE(TAG, " IoT Core failed to initialize, error: %d", error_init);
         vTaskDelete(NULL);
     }
 
@@ -210,7 +205,7 @@ static void mqtt_task(void *pvParameters)
         to numerous topics. */
     iotc_context = iotc_create_context();
     if (IOTC_INVALID_CONTEXT_HANDLE >= iotc_context) {
-        ESP_LOGE(TAG, " iotc failed to create context, error: %d", -iotc_context);
+        ESP_LOGE(TAG, " IoT Core failed to create context, error: %d", -iotc_context);
         vTaskDelete(NULL);
     }
 

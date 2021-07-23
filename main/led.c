@@ -3,9 +3,9 @@
 #define LEDC_TIMER              LEDC_TIMER_0
 #define LEDC_MODE               LEDC_LOW_SPEED_MODE
 #define LEDC_CHANNEL            LEDC_CHANNEL_0
-#define LEDC_DUTY_RES           LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-#define LEDC_DUTY               (4095) // Set duty to 50%. ((2 ** 13) - 1) * 50% = 4095
-#define LEDC_FREQUENCY          (5000) // Frequency in Hertz. Set frequency at 5 kHz
+#define LEDC_DUTY_RES           LEDC_TIMER_13_BIT   // Set duty resolution to 13 bits
+#define LEDC_DUTY_EXAMPLE       (4095)              // Set duty to 50%. ((2 ** 13) - 1) * 50% = 4095
+#define LEDC_FREQUENCY          (5000)              // Frequency in Hertz. Set frequency at 5 kHz
 
 #define RELAY_GPIO 13
 
@@ -36,15 +36,17 @@ void example_ledc_init(void)
     ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
 }
 
-void change_led(float percent)
+/*  Apply the percentage on the signal to the LED panel and keep the relay on. 
+    In case of receiving a percentage of 0, the relay is turned off.  */
+void apply_led_percent(float percent_from_iot_core)
 {   
-    if (percent > 0) {
+    if (percent_from_iot_core > 0) {
         // Turn on relay
         gpio_set_level(RELAY_GPIO, true);
 
-        // Set duty to 50%
-        float percent_to_binary = percent * 8191;
+        float percent_to_binary = percent_from_iot_core * ((2 ^ LEDC_DUTY_RES) - 1);
         ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, (int)percent_to_binary));
+
         // Update duty to apply the new value
         ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
     } else {
