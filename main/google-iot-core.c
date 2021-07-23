@@ -2,6 +2,8 @@
 #include <iotc_jwt.h>
 #include "cJSON.c"
 
+#include "commands.c"
+
 extern const uint8_t ec_pv_key_start[] asm("_binary_private_key_pem_start");
 extern const uint8_t ec_pv_key_end[] asm("_binary_private_key_pem_end");
 
@@ -115,6 +117,7 @@ void iotc_mqttlogic_subscribe_commands_callback(
         ESP_LOGI(TAG, "Message Payload: %s ", sub_message);
 
         char* str = NULL;
+        char command_from_iot_core;
 
         // Parse data from IoT Core. Go to end if receive null from IoT Core
         cJSON *json = cJSON_Parse(sub_message);
@@ -132,6 +135,8 @@ void iotc_mqttlogic_subscribe_commands_callback(
         
         str = cJSON_Print(command);
         ESP_LOGI(TAG, "command: %s ", str);
+
+        // apply_command(command_from_iot_core);
     
         end: 
             cJSON_Delete(json);                
