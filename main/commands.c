@@ -1,3 +1,5 @@
+/*  Executes a routine depending on the type of command received 
+    by the device from the Iot Core.  */
 void apply_command(char* command_from_iot_core)
 {   
     int compare_string_with_reset_result;
