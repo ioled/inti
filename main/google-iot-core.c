@@ -117,7 +117,6 @@ void iotc_mqttlogic_subscribe_commands_callback(
         ESP_LOGI(TAG, "Message Payload: %s ", sub_message);
 
         char* str = NULL;
-        char command_from_iot_core;
 
         // Parse data from IoT Core. Go to end if receive null from IoT Core
         cJSON *json = cJSON_Parse(sub_message);
@@ -134,9 +133,8 @@ void iotc_mqttlogic_subscribe_commands_callback(
         cJSON *command = cJSON_GetObjectItemCaseSensitive(json, "command");
         
         str = cJSON_Print(command);
-        ESP_LOGI(TAG, "command: %s ", str);
 
-        // apply_command(command_from_iot_core);
+        apply_command(str);
     
         end: 
             cJSON_Delete(json);                

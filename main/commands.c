@@ -1,8 +1,18 @@
-void apply_command(char command_from_iot_core)
+void apply_command(char* command_from_iot_core)
 {   
-    // if (command_from_iot_core == "reset") {
-    //     ESP_LOGI(TAG, "Restarting now.");
-    //     fflush(stdout);
-    //     esp_restart();
-    // } 
+    int compare_string_with_reset_result;
+    compare_string_with_reset_result = strcmp(command_from_iot_core,  "\"reset\"");
+
+    int compare_string_with_ota_result;
+    compare_string_with_ota_result = strcmp(command_from_iot_core,  "\"ota\"");
+
+    if (compare_string_with_reset_result == 0) {
+        ESP_LOGI(TAG, "Restarting now.");
+        fflush(stdout);
+        esp_restart();
+    } 
+
+    if (compare_string_with_ota_result == 0) {
+        ESP_LOGI(TAG, "Update !");        
+    } 
 }
