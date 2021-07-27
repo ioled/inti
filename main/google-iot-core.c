@@ -3,6 +3,7 @@
 #include "cJSON.c"
 
 #include "commands.c"
+#include "state-machine.c"
 
 extern const uint8_t ec_pv_key_start[] asm("_binary_private_key_pem_start");
 extern const uint8_t ec_pv_key_end[] asm("_binary_private_key_pem_end");
@@ -153,6 +154,9 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
     case IOTC_CONNECTION_STATE_OPENED:
         ESP_LOGI(TAG, "Connected to IoT Core");
 
+        // Change current state to: CONNECTED_TO_MQTT
+        set_current_state(CONNECTED_TO_MQTT);
+
         /* Publish immediately upon connect. 'publish_function' is defined
            in this example file and invokes the IoTC API to publish a
            message. */
@@ -216,6 +220,10 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
             /* The disconnection was unforeseen.  Try reconnect to the server
             with previously set configuration, which has been provided
             to this callback in the conn_data structure. */
+
+            // Change current state to: SEARCHING_NETWORK
+            set_current_state(SEARCHING_NETWORK);
+
             iotc_connect(
                 in_context_handle, conn_data->username, conn_data->password, conn_data->client_id,
                 conn_data->connection_timeout, conn_data->keepalive_timeout,
@@ -300,3 +308,4 @@ static void mqtt_task(void *pvParameters)
 
     vTaskDelete(NULL);
 }
+

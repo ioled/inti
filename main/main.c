@@ -56,7 +56,7 @@ static void blink_led(void)
 
     /* Set the GPIO level according to the state (LOW or HIGH)*/
     // TODO: eliminate this
-    // gpio_set_level(INTEGRATED_LED_GPIO, s_led_state);
+    gpio_set_level(INTEGRATED_LED_GPIO, s_led_state);
 
     /* If the addressable LED is enabled */
     if (s_led_state) {
@@ -78,14 +78,12 @@ static void blink_led(void)
 /* --------------- */
 
 void app_main(void)
-{
+{   
     init_esp();
-    wifi_init_sta();
-    obtain_time();
-    
-    xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
+    set_current_state(INIT);
 
     while (1) {
+
         ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
         blink_led();
         /* Toggle the LED state */
@@ -93,3 +91,4 @@ void app_main(void)
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
+
