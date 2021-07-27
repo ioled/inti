@@ -16,7 +16,7 @@ void state_machine() {
         case INIT:
             ESP_LOGI(TAG, "Cambiando al estado INIT");
 
-            turn_strip_led_color();
+            turn_strip_led_color(WHITE);
             wifi_init_sta();
             obtain_time();
             break;
@@ -25,9 +25,11 @@ void state_machine() {
             break;
         case SEARCHING_NETWORK:
             ESP_LOGI(TAG, "Cambiando al estado SEARCHING_NETWORK");
+            turn_strip_led_color(WHITE);
             break;
         case CONNECTED_TO_MQTT:
             ESP_LOGI(TAG,"Cambiando al estado CONNECTED_TO_MQTT");
+            turn_strip_led_color(GREEN);
             break;
         default:
             ESP_LOGI(TAG," ");        
