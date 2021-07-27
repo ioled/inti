@@ -16,9 +16,6 @@
 #include "led.c"
 #include "google-iot-core.c"
 
-static uint8_t s_led_state = 0;
-static led_strip_t *pStrip_a;
-
 static void init_esp(void)
 {   
     //Initialize NVS
@@ -51,29 +48,6 @@ static void init_esp(void)
     example_ledc_init();
 }
 
-static void blink_led(void)
-{   
-
-    /* Set the GPIO level according to the state (LOW or HIGH)*/
-    // TODO: eliminate this
-    gpio_set_level(INTEGRATED_LED_GPIO, s_led_state);
-
-    /* If the addressable LED is enabled */
-    if (s_led_state) {
-        /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
-        pStrip_a->set_pixel(pStrip_a, 0, 0, 16, 0);
-        pStrip_a->set_pixel(pStrip_a, 1, 0, 16, 0);
-        pStrip_a->set_pixel(pStrip_a, 2, 0, 16, 0);
-        pStrip_a->set_pixel(pStrip_a, 3, 0, 16, 0);
-        pStrip_a->set_pixel(pStrip_a, 4, 0, 16, 0);
-
-        /* Refresh the strip to send data */
-        pStrip_a->refresh(pStrip_a, 100);
-    } else {
-        /* Set all LED off to clear all pixels */
-        pStrip_a->clear(pStrip_a, 50);
-    }
-}
 
 /* --------------- */
 
@@ -83,14 +57,6 @@ void app_main(void)
     set_current_state(INIT);
 
     xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
-
-    while (1) {
-
-        ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
-        blink_led();
-        /* Toggle the LED state */
-        s_led_state = !s_led_state;
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
+    
 }
 

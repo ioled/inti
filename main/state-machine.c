@@ -1,4 +1,5 @@
 
+#include "neopixel.c"
 
 enum States
 {
@@ -15,19 +16,15 @@ void state_machine() {
         case INIT:
             ESP_LOGI(TAG, "Cambiando al estado INIT");
 
+            turn_strip_led_color();
             wifi_init_sta();
             obtain_time();
-    
             break;
         case AP_MODE:
             ESP_LOGI(TAG, "Cambiando al estado AP");
             break;
         case SEARCHING_NETWORK:
             ESP_LOGI(TAG, "Cambiando al estado SEARCHING_NETWORK");
-
-            wifi_init_sta();
-            obtain_time();
-    
             break;
         case CONNECTED_TO_MQTT:
             ESP_LOGI(TAG,"Cambiando al estado CONNECTED_TO_MQTT");
