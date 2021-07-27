@@ -82,6 +82,8 @@ void app_main(void)
     init_esp();
     set_current_state(INIT);
 
+    xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
+
     while (1) {
 
         ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
