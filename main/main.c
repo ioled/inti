@@ -22,10 +22,17 @@ static void init_esp(void)
     //Initialize NVS
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+      // 1.OTA app partition table has a smaller NVS partition size than the non-OTA
+      // partition table. This size mismatch may cause NVS initialization to fail.
+      // 2.NVS partition contains data in new format and cannot be recognized by this version of code.
+      // If this happens, we erase NVS partition and initialize NVS again.
       ESP_ERROR_CHECK(nvs_flash_erase());
       ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
+
+    get_sha256_of_partitions();
+
 
     ESP_LOGI(TAG, "Initializing esp32 - iOLED Inti");
 

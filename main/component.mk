@@ -7,6 +7,7 @@
 # please read the ESP-IDF documents if you need to do this.
 #
 COMPONENT_EMBED_TXTFILES := certs/private_key.pem
+COMPONENT_EMBED_TXTFILES :=  ${PROJECT_PATH}/server_certs/ca_cert.pem
 
 ifndef IDF_CI_BUILD
 # Print an error if the certificate/key files are missing

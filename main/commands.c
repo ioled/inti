@@ -1,3 +1,5 @@
+#include "ota.c"
+
 /*  Executes a routine depending on the type of command received 
     by the device from the Iot Core.  */
 void apply_command(char* command_from_iot_core)
@@ -15,6 +17,8 @@ void apply_command(char* command_from_iot_core)
     } 
 
     if (compare_string_with_ota_result == 0) {
-        ESP_LOGI(TAG, "Update !");        
+        ESP_LOGI(TAG, "Update !");    
+        xTaskCreate(&simple_ota_example_task, "ota_example_task", 8192, NULL, 5, NULL);
+    
     } 
 }
