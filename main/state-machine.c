@@ -1,5 +1,4 @@
 
-#include "neopixel.c"
 
 enum States
 {

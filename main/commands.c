@@ -18,6 +18,7 @@ void apply_command(char* command_from_iot_core)
 
     if (compare_string_with_ota_result == 0) {
         ESP_LOGI(TAG, "Update !");    
+        turn_strip_led_color(BLUE);
         xTaskCreate(&simple_ota_example_task, "ota_example_task", 8192, NULL, 5, NULL);
     
     } 

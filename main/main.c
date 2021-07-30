@@ -12,9 +12,11 @@
 #include "lwip/sys.h"
 
 #include "constants.c"
+
 #include "wifi.c"
 #include "sntp.c"
 #include "led.c"
+#include "neopixel.c"
 #include "google-iot-core.c"
 
 static void init_esp(void)
