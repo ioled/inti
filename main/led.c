@@ -44,7 +44,7 @@ void apply_led_percent(float percent_from_iot_core)
         // Turn on relay
         gpio_set_level(RELAY_GPIO, true);
 
-        float percent_to_binary = percent_from_iot_core * ((2 ^ LEDC_DUTY_RES) - 1);
+        float percent_to_binary = percent_from_iot_core * 8191;
         ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, (int)percent_to_binary));
 
         // Update duty to apply the new value
