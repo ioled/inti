@@ -63,6 +63,7 @@ static void init_esp(void)
 void app_main(void)
 {   
     init_esp();
+
     set_current_state(INIT);
 
     xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);

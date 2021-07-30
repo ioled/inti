@@ -13,22 +13,21 @@ enum States current_state;
 void state_machine() {
     switch(current_state){
         case INIT:
-            ESP_LOGI(TAG, "Cambiando al estado INIT");
-
+            ESP_LOGI(TAG, "Change state to: INIT");                             
             turn_strip_led_color(WHITE);
             wifi_init_sta();
             obtain_time();
             break;
         case AP_MODE:
-            ESP_LOGI(TAG, "Cambiando al estado AP");
+            ESP_LOGI(TAG, "Change state to: AP");
             break;
         case SEARCHING_NETWORK:
-            ESP_LOGI(TAG, "Cambiando al estado SEARCHING_NETWORK");
-            turn_strip_led_color(WHITE);
+            ESP_LOGI(TAG, "Change state to: SEARCHING_NETWORK");   
+            turn_strip_led_color(WHITE);        
             break;
         case CONNECTED_TO_MQTT:
-            ESP_LOGI(TAG,"Cambiando al estado CONNECTED_TO_MQTT");
-            turn_strip_led_color(IOLED_GREEN);
+            ESP_LOGI(TAG,"Change state to: CONNECTED_TO_MQTT");
+            turn_strip_led_color(HARD);
             break;
         default:
             ESP_LOGI(TAG," ");        

@@ -5,7 +5,8 @@ enum Colors
     WHITE,
     BLUE,
     GREEN,
-    IOLED_GREEN
+    IOLED_GREEN,
+    HARD
 };
 
 static void turn_strip_led_color(enum Colors color)
@@ -22,7 +23,7 @@ static void turn_strip_led_color(enum Colors color)
             /* Refresh the strip to send data */
             pStrip_a->refresh(pStrip_a, 100);
             break;
-
+        
         case BLUE:
             /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
             pStrip_a->set_pixel(pStrip_a, 0, 0, 0, 16);
@@ -57,9 +58,19 @@ static void turn_strip_led_color(enum Colors color)
             pStrip_a->refresh(pStrip_a, 100);
             break;
 
+        case HARD:
+            /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
+            pStrip_a->set_pixel(pStrip_a, 0, 16, 0, 0);
+            pStrip_a->set_pixel(pStrip_a, 1, 0, 16, 0);
+            pStrip_a->set_pixel(pStrip_a, 2, 0, 0, 16);
+            pStrip_a->set_pixel(pStrip_a, 3, 16, 16, 16);
+
+            /* Refresh the strip to send data */
+            pStrip_a->refresh(pStrip_a, 100);
+            break;
+
         default:
             ESP_LOGI(TAG," ");   
         }
-    
-    
 }
+
