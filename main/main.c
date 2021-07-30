@@ -5,6 +5,7 @@
 
 #include "led_strip.h"
 
+#include "nvs.h"
 #include "nvs_flash.h"
 
 #include "lwip/err.h"
