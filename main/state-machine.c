@@ -28,7 +28,7 @@ void state_machine() {
             break;
         case CONNECTED_TO_MQTT:
             ESP_LOGI(TAG,"Cambiando al estado CONNECTED_TO_MQTT");
-            turn_strip_led_color(GREEN);
+            turn_strip_led_color(IOLED_GREEN);
             break;
         default:
             ESP_LOGI(TAG," ");        

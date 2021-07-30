@@ -35,7 +35,6 @@ static void init_esp(void)
 
     get_sha256_of_partitions();
 
-
     ESP_LOGI(TAG, "Initializing esp32 - iOLED Inti");
 
     /* LED strip initialization with the GPIO and pixels number*/

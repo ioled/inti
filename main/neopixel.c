@@ -4,7 +4,8 @@ enum Colors
 {
     WHITE,
     BLUE,
-    GREEN
+    GREEN,
+    IOLED_GREEN
 };
 
 static void turn_strip_led_color(enum Colors color)
@@ -40,6 +41,17 @@ static void turn_strip_led_color(enum Colors color)
             pStrip_a->set_pixel(pStrip_a, 1, 0, 16, 0);
             pStrip_a->set_pixel(pStrip_a, 2, 0, 16, 0);
             pStrip_a->set_pixel(pStrip_a, 3, 0, 16, 0);
+
+            /* Refresh the strip to send data */
+            pStrip_a->refresh(pStrip_a, 100);
+            break;
+        
+        case IOLED_GREEN:
+            /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
+            pStrip_a->set_pixel(pStrip_a, 0, 9, 204, 10);
+            pStrip_a->set_pixel(pStrip_a, 1, 9, 204, 10);
+            pStrip_a->set_pixel(pStrip_a, 2, 9, 204, 10);
+            pStrip_a->set_pixel(pStrip_a, 3, 9, 204, 10);
 
             /* Refresh the strip to send data */
             pStrip_a->refresh(pStrip_a, 100);
