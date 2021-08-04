@@ -15,7 +15,7 @@ extern const uint8_t ec_pv_key_end[] asm("_binary_private_key_pem_end");
 #define SUBSCRIBE_TOPIC_CONFIG "/devices/%s/config"
 #define PUBLISH_TOPIC_EVENT "/devices/%s/events"
 #define PUBLISH_TOPIC_STATE "/devices/%s/state"
-#define TEMPERATURE_DATA "{\"hum\": 11, \"temp\": 9.0}"
+#define TEMPERATURE_DATA "{\"hum\": 11, \"temp\": 9.0, \"duty\": 0.5}"
 #define MIN_TEMP 20
 
 char *subscribe_topic_command, *subscribe_topic_config;
