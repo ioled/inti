@@ -103,14 +103,11 @@ void write_duty(int duty_to_save){
     ESP_ERROR_CHECK(err);
 
     // Open
-    ESP_LOGI(TAG, "Opening Non-Volatile Storage (NVS) partition... ");
     nvs_handle_t my_handle;
     err = nvs_open("storage", NVS_READWRITE, &my_handle);
     if (err != ESP_OK) {
         printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
-    } else {
-        ESP_LOGI(TAG, "Done\n");
-            
+    } else {            
         // Write
         ESP_LOGI(TAG, "Updating duty in NVS ... ");
 
@@ -118,7 +115,7 @@ void write_duty(int duty_to_save){
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Done\n");
+                ESP_LOGI(TAG, "Duty: %d\n", duty_to_save);
                 break;
             default :
                 ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
@@ -128,7 +125,6 @@ void write_duty(int duty_to_save){
         // After setting any values, nvs_commit() must be called to ensure changes are written
         // to flash storage. Implementations may write to storage at other times,
         // but this is not guaranteed.
-        ESP_LOGI(TAG, "Committing updates in NVS ... ");
         err = nvs_commit(my_handle);                       
         // Close
         nvs_close(my_handle);
