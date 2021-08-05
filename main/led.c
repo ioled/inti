@@ -49,6 +49,9 @@ void apply_led_percent(float percent_from_iot_core)
 
         // Update duty to apply the new value
         ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+
+        printf("Apply duty %f\n", percent_from_iot_core);
+
     } else {
         gpio_set_level(RELAY_GPIO, false);
     }

@@ -90,6 +90,9 @@ void iotc_mqttlogic_subscribe_config_callback(
 
         percent_from_iot_core = duty->valuedouble;
 
+        // Save in NVS
+        write_duty((int)(percent_from_iot_core * 100));
+
         apply_led_percent(percent_from_iot_core);
         end: 
             cJSON_Delete(json);                

@@ -1,6 +1,7 @@
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp_log.h"
 #include "driver/gpio.h"
 
 #include "led_strip.h"
@@ -13,12 +14,15 @@
 
 #include "constants.c"
 
+static const char *TAG = "iOLED Inti v0.5.0";
+
 #include "wifi.c"
-#include "sntp.c"
-#include "led.c"
-#include "neopixel.c"
-#include "google-iot-core.c"
 #include "nvs.c"
+#include "sntp.c"
+#include "neopixel.c"
+#include "led.c"
+#include "google-iot-core.c"
+
 
 static void init_esp(void)
 {   
@@ -54,10 +58,11 @@ static void init_esp(void)
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(RELAY_GPIO, GPIO_MODE_OUTPUT);
 
-    ESP_LOGI(TAG, "Initializing signal led in pin %d", SIGNAL_LED_GPIO);
+    ESP_LOGI(TAG, "Initializing signal led in pin %d\n", SIGNAL_LED_GPIO);
     example_ledc_init();
 
-    char *a = read_wifi_credentials();
+    int duty = read_duty_from_nvs();
+    apply_led_percent((float)(duty) / 100);   
 
 }
 
