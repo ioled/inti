@@ -90,8 +90,8 @@ void write_wifi_credentials(char wifi_ssid_to_write){
     }
 }
 
-/*  Write duty to NVS (ioled_data partition)  */
-void write_duty(int duty_to_save){
+/*  Write duty in NVS (ioled_data partition)  */
+void write_duty_in_nvs(int duty_to_save){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
     // esp_err_t err = nvs_flash_init();
@@ -144,15 +144,12 @@ int read_duty_from_nvs(){
     ESP_ERROR_CHECK(err);
 
     // Open
-    ESP_LOGI(TAG, "Opening Non-Volatile Storage (NVS) partition... ");
     nvs_handle_t my_handle;
     err = nvs_open("storage", NVS_READWRITE, &my_handle);
     if (err != ESP_OK) {
         printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
         return 0;
-    } else {
-        ESP_LOGI(TAG, "Done\n");
-            
+    } else {            
         // Read
         ESP_LOGI(TAG, "Reading duty from NVS ... ");
 

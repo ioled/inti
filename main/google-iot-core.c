@@ -86,12 +86,12 @@ void iotc_mqttlogic_subscribe_config_callback(
         cJSON *duty = cJSON_GetObjectItemCaseSensitive(led1, "duty");
 
         str = cJSON_Print(duty);
-        ESP_LOGI(TAG, "duty: %s ", str);
+        ESP_LOGI(TAG, "duty: %s \n", str);
 
         percent_from_iot_core = duty->valuedouble;
 
         // Save in NVS
-        write_duty((int)(percent_from_iot_core * 100));
+        write_duty_in_nvs((int)(percent_from_iot_core * 100));
 
         apply_led_percent(percent_from_iot_core);
         end: 
