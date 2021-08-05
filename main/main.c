@@ -81,23 +81,23 @@ static void init_esp(void)
         printf("Done\n");
 
         // Read
-        // printf("Reading wifi ssid credential from NVS ... ");
-        printf("Reading duty  from NVS ... ");
+        printf("Reading wifi ssid credential from NVS ... ");
+        // printf("Reading duty  from NVS ... ");
 
         // int32_t restart_counter = 0; // value will default to 0, if not set yet in NVS
         char wifi_ssid_credential [128] = "VTR_XXXXXX";
         char str [128];
         size_t required_size;
 
-        int32_t duty = 0; // value will default to 0, if not set yet in NVS
+        // int32_t duty = 0; // value will default to 0, if not set yet in NVS
 
-        // err = nvs_get_str(my_handle, "wifi_ssid_credential", str, &required_size);
-        err = nvs_get_i32(my_handle, "duty", &duty);
+        err = nvs_get_str(my_handle, "wifi_ssid", str, &required_size);
+        // err = nvs_get_i32(my_handle, "duty", &duty);
         switch (err) {
             case ESP_OK:
                 printf("Done\n");
-                // printf("Wifi SSID = %s\n", str);
-                printf("Duty = %d\n", duty);
+                printf("Wifi SSID = %s\n", str);
+                // printf("Duty = %d\n", duty);
 
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
@@ -112,15 +112,12 @@ static void init_esp(void)
         // printf("Updating wifi ssid credential in NVS ... ");
         printf("Updating duty in NVS ... ");
 
-        // err = nvs_set_str(my_handle, "wifi_ssid_credential", wifi_ssid_credential);
-        duty = 50;
-        err = nvs_set_i32(my_handle, "duty", duty);
+        err = nvs_set_str(my_handle, "wifi_ssid", wifi_ssid_credential);
+        // duty = 50;
+        // err = nvs_set_i32(my_handle, "duty", duty);
 
         printf((err != ESP_OK) ? "Failed!\n" : "Done\n");
-
-
-        
-
+ 
         // Commit written value.
         // After setting any values, nvs_commit() must be called to ensure changes are written
         // to flash storage. Implementations may write to storage at other times,
