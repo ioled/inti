@@ -78,9 +78,9 @@ void app_main(void)
 {   
     init_esp();
 
-    set_current_state(INIT);
+    set_current_state(AP_MODE);
 
-    xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
+    // xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
     
 }
 

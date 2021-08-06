@@ -20,6 +20,9 @@ void state_machine() {
             break;
         case AP_MODE:
             ESP_LOGI(TAG, "Change state to: AP");
+            turn_strip_led_color(BLUE);
+            ESP_LOGI(TAG, "ESP_WIFI_MODE_AP");
+            wifi_init_softap();
             break;
         case SEARCHING_NETWORK:
             ESP_LOGI(TAG, "Change state to: SEARCHING_NETWORK");   
