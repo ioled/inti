@@ -12,6 +12,12 @@
 #include "lwip/err.h"
 #include "lwip/sys.h"
 
+/* Wifi SSID */
+char wifi_ssid[32] = "VTR-8111353";
+
+/* Wifi password */
+char wifi_pass[64] = "dkYxgw2C4mmm";
+
 #include "constants.c"
 #include "wifi.c"
 #include "nvs.c"
@@ -60,8 +66,10 @@ static void init_esp(void)
     example_ledc_init();
 
     int duty = read_duty_from_nvs();
-    apply_led_percent((float)(duty) / 100);   
+    apply_led_percent((float)(duty) / 100);  
 
+    // read_wifi_credentials(); 
+    // write_wifi_credentials(wifi_pass);
 }
 
 /* ----------------------------------------------------------------------------------------- */

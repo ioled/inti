@@ -54,7 +54,7 @@ void apply_led_percent(float percent_from_iot_core)
         ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
     } else {
         // Turn off relay
-        ESP_LOGE(TAG, "Relay level: 0");
+        ESP_LOGE(TAG, "Relay level: 0\n");
         gpio_set_level(RELAY_GPIO, false);
     }
 }
