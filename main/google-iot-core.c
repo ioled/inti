@@ -1,8 +1,11 @@
+/* ------------------------ */
+
 #include <iotc.h>
 #include <iotc_jwt.h>
 #include "cJSON.c"
 
 #include "commands.c"
+// #include "led.c"
 #include "state-machine.c"
 
 extern const uint8_t ec_pv_key_start[] asm("_binary_private_key_pem_start");
@@ -311,4 +314,3 @@ static void mqtt_task(void *pvParameters)
 
     vTaskDelete(NULL);
 }
-

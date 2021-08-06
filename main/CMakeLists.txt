@@ -1,7 +1,7 @@
 set(COMPONENT_REQUIRES )
 set(COMPONENT_PRIV_REQUIRES )
 
-set(COMPONENT_SRCS "led.c" "main.c" EMBED_TXTFILES ${project_dir}/server_certs/ca_cert.pem)
+set(COMPONENT_SRCS "main.c" EMBED_TXTFILES ${project_dir}/server_certs/ca_cert.pem)
 set(COMPONENT_ADD_INCLUDEDIRS "")
 
 register_component()

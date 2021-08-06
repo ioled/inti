@@ -13,9 +13,6 @@
 #include "lwip/sys.h"
 
 #include "constants.c"
-
-static const char *TAG = "iOLED Inti v0.5.0";
-
 #include "wifi.c"
 #include "nvs.c"
 #include "sntp.c"
@@ -23,9 +20,10 @@ static const char *TAG = "iOLED Inti v0.5.0";
 #include "led.c"
 #include "google-iot-core.c"
 
+/* ------------------------ */
 
 static void init_esp(void)
-{   
+{      
     //Initialize NVS
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -66,8 +64,7 @@ static void init_esp(void)
 
 }
 
-
-/* --------------- */
+/* ----------------------------------------------------------------------------------------- */
 
 void app_main(void)
 {   
@@ -78,4 +75,7 @@ void app_main(void)
     xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
     
 }
+
+
+
 

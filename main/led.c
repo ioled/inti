@@ -1,3 +1,4 @@
+/*  LED MODULE */
 #include "driver/ledc.h"
 
 #define LEDC_TIMER              LEDC_TIMER_0
@@ -42,17 +43,18 @@ void apply_led_percent(float percent_from_iot_core)
 {   
     if (percent_from_iot_core > 0) {
         // Turn on relay
+        ESP_LOGW(TAG, "Relay level: 1");
         gpio_set_level(RELAY_GPIO, true);
 
         float percent_to_binary = percent_from_iot_core * 8191;
         ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, (int)percent_to_binary));
 
         // Update duty to apply the new value
+        ESP_LOGW(TAG, "Apply duty %f\n", percent_from_iot_core);
         ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
-
-        printf("Apply duty %f\n", percent_from_iot_core);
-
     } else {
+        // Turn off relay
+        ESP_LOGE(TAG, "Relay level: 0");
         gpio_set_level(RELAY_GPIO, false);
     }
 }
