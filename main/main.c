@@ -82,6 +82,12 @@ void app_main(void)
 
     // xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
     
+    static httpd_handle_t server = NULL;
+
+    // ESP_ERROR_CHECK(example_connect());
+
+    /* Start the server for the first time */
+    server = start_webserver();
 }
 
 

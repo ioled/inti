@@ -3,6 +3,8 @@
 #include "esp_wifi.h"
 #include "esp_event.h"
 
+#include "http_server.c"
+
 #define ESP_WIFI_SSID               "iOLED AP"
 #define ESP_WIFI_PASS               ""
 #define ESP_MAXIMUM_RETRY           5
