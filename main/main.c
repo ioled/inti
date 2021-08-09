@@ -28,6 +28,7 @@ char wifi_pass[64] = "dkYxgw2C4mmm";
 #include "led.c"
 #include "google-iot-core.c"
 
+#include "http_server.c"
 
 /* ------------------------ */
 

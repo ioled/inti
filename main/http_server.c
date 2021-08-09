@@ -157,14 +157,11 @@ static esp_err_t set_wifi_credentials_handler(httpd_req_t *req)
         
         char* str_ssid = cJSON_Print(ssid);
 
-        printf("ssid from api: %s", str_ssid);
-
-
+        write_wifi_credentials(str_ssid);
 
         /* Log data received */
-        ESP_LOGI(TAG, "=========== RECEIVED DATA ==========");
+        ESP_LOGI(TAG, "[/setwificredentials][Req]");
         ESP_LOGI(TAG, "%.*s", ret, buf);
-        ESP_LOGI(TAG, "====================================");
     }
 
     // End response
