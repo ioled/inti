@@ -2,7 +2,6 @@
 
 #include <iotc.h>
 #include <iotc_jwt.h>
-#include "cJSON.c"
 
 #include "commands.c"
 // #include "led.c"

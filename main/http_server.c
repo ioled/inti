@@ -122,8 +122,15 @@ static esp_err_t echo_post_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+static const httpd_uri_t echo = {
+    .uri       = "/echo",
+    .method    = HTTP_POST,
+    .handler   = echo_post_handler,
+    .user_ctx  = NULL
+};
+
 /* An HTTP POST handler */
-static esp_err_t setwificredentials_handler(httpd_req_t *req)
+static esp_err_t set_wifi_credentials_handler(httpd_req_t *req)
 {
     char buf[100];
     int ret, remaining = req->content_len;
@@ -143,6 +150,17 @@ static esp_err_t setwificredentials_handler(httpd_req_t *req)
         httpd_resp_send_chunk(req, buf, ret);
         remaining -= ret;
 
+        cJSON *body = cJSON_Parse(buf);
+
+        cJSON *ssid = cJSON_GetObjectItemCaseSensitive(body, "ssid");
+        cJSON *pass = cJSON_GetObjectItemCaseSensitive(body, "pass");
+        
+        char* str_ssid = cJSON_Print(ssid);
+
+        printf("ssid from api: %s", str_ssid);
+
+
+
         /* Log data received */
         ESP_LOGI(TAG, "=========== RECEIVED DATA ==========");
         ESP_LOGI(TAG, "%.*s", ret, buf);
@@ -154,17 +172,12 @@ static esp_err_t setwificredentials_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
-static const httpd_uri_t echo = {
+
+
+static const httpd_uri_t set_wifi_credentials = {
     .uri       = "/setwificredentials",
     .method    = HTTP_POST,
-    .handler   = echo_post_handler,
-    .user_ctx  = NULL
-};
-
-static const httpd_uri_t echo = {
-    .uri       = "/echo",
-    .method    = HTTP_POST,
-    .handler   = echo_post_handler,
+    .handler   = set_wifi_credentials_handler,
     .user_ctx  = NULL
 };
 
@@ -251,10 +264,9 @@ static httpd_handle_t start_webserver(void)
         ESP_LOGI(TAG, "Registering URI handlers");
         httpd_register_uri_handler(server, &hello);
         httpd_register_uri_handler(server, &echo);
-        httpd_register_uri_handler(server, &ctrl);
-        #if CONFIG_EXAMPLE_BASIC_AUTH
-        httpd_register_basic_auth(server);
-        #endif
+        httpd_register_uri_handler(server, &ctrl);    
+        httpd_register_uri_handler(server, &set_wifi_credentials);    
+
         return server;
     }
 

@@ -12,6 +12,8 @@
 #include "lwip/err.h"
 #include "lwip/sys.h"
 
+#include "cJSON.c"
+
 /* Wifi SSID */
 char wifi_ssid[32] = "VTR-8111353";
 
@@ -25,6 +27,7 @@ char wifi_pass[64] = "dkYxgw2C4mmm";
 #include "neopixel.c"
 #include "led.c"
 #include "google-iot-core.c"
+
 
 /* ------------------------ */
 
