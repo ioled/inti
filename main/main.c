@@ -72,8 +72,7 @@ static void init_esp(void)
     int duty = read_duty_from_nvs();
     apply_led_percent((float)(duty) / 100);  
 
-    // read_wifi_credentials(); 
-    // write_wifi_credentials(wifi_pass);
+    read_wifi_credentials(); 
 }
 
 /* ----------------------------------------------------------------------------------------- */
@@ -82,16 +81,15 @@ void app_main(void)
 {   
     init_esp();
 
-    set_current_state(AP_MODE);
+    set_current_state(INIT);
+    // set_current_state(AP_MODE);
 
-    // xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
+    xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
     
-    static httpd_handle_t server = NULL;
+    // static httpd_handle_t server = NULL;    
 
-    // ESP_ERROR_CHECK(example_connect());
-
-    /* Start the server for the first time */
-    server = start_webserver();
+    // /* Start the server for the first time */
+    // server = start_webserver();
 }
 
 
