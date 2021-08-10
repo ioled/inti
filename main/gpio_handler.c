@@ -25,7 +25,7 @@ static void gpio_task(void* arg)
         }
     }
 }
-
+/* Create xTask action with button */
 static void set_button(){
     // static httpd_handle_t server = NULL;    
     gpio_config_t io_conf;

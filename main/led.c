@@ -12,6 +12,7 @@
 
 #define SIGNAL_LED_GPIO 4
 
+/* Configure GPIO pin for PWM, set frequency and mode */
 void example_ledc_init(void)
 {
     // Prepare and then apply the LEDC PWM timer configuration

@@ -97,9 +97,6 @@ void app_main(void)
 
     int compare_string_with_wifi_mode = strcmp(wifi_mode,  "STA");
 
-    // set_current_state(INIT);
-
-
     if (compare_string_with_wifi_mode == 0) {
       set_current_state(INIT);
       xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
@@ -113,10 +110,6 @@ void app_main(void)
       server = start_webserver();
     }
 
-
-    
-    
-   
 }
 
 
