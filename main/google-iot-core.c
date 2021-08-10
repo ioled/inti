@@ -4,8 +4,6 @@
 #include <iotc_jwt.h>
 
 #include "commands.c"
-// #include "led.c"
-#include "state-machine.c"
 
 extern const uint8_t ec_pv_key_start[] asm("_binary_private_key_pem_start");
 extern const uint8_t ec_pv_key_end[] asm("_binary_private_key_pem_end");

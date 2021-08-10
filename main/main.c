@@ -1,6 +1,9 @@
+#include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/queue.h"
 #include "esp_log.h"
 #include "driver/gpio.h"
 
@@ -22,9 +25,11 @@ char wifi_pass[64] = "dkYxgw2C4mmm";
 
 #include "constants.c"
 #include "wifi.c"
-#include "nvs.c"
 #include "sntp.c"
 #include "neopixel.c"
+#include "state-machine.c"
+#include "gpio_handler.c"
+#include "nvs.c"
 #include "led.c"
 #include "google-iot-core.c"
 
@@ -72,7 +77,7 @@ static void init_esp(void)
     int duty = read_duty_from_nvs();
     apply_led_percent((float)(duty) / 100);  
 
-    read_wifi_credentials(); 
+    // read_wifi_credentials(); 
 }
 
 /* ----------------------------------------------------------------------------------------- */
@@ -84,12 +89,15 @@ void app_main(void)
     set_current_state(INIT);
     // set_current_state(AP_MODE);
 
+    set_button();
+
     xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
     
-    // static httpd_handle_t server = NULL;    
+    
 
     // /* Start the server for the first time */
     // server = start_webserver();
+   
 }
 
 
