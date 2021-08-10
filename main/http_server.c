@@ -158,7 +158,7 @@ static esp_err_t set_wifi_credentials_handler(httpd_req_t *req)
         char* str_ssid = cJSON_Print(ssid);
         char* str_pass = cJSON_Print(pass);
 
-        write_wifi_credentials(str_ssid, str_pass);
+        write_wifi_credentials_in_nvs(str_ssid, str_pass);
 
         /* Log data received */
         ESP_LOGI(TAG, "[/setwificredentials][Req]");

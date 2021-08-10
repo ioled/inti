@@ -23,13 +23,16 @@ char wifi_ssid[32] = "VTR-8111353";
 /* Wifi password */
 char wifi_pass[64] = "dkYxgw2C4mmm";
 
+/* Wifi mode */
+char wifi_mode[10] = "STA";
+
 #include "constants.c"
 #include "wifi.c"
 #include "sntp.c"
 #include "neopixel.c"
 #include "state-machine.c"
-#include "gpio_handler.c"
 #include "nvs.c"
+#include "gpio_handler.c"
 #include "led.c"
 #include "google-iot-core.c"
 
@@ -74,10 +77,16 @@ static void init_esp(void)
     ESP_LOGI(TAG, "Initializing signal led in pin %d\n", SIGNAL_LED_GPIO);
     example_ledc_init();
 
+    ESP_LOGI(TAG, "Initializing button in pin %d\n", GPIO_INPUT_IO_0);
+    set_button();
+
+
     int duty = read_duty_from_nvs();
     apply_led_percent((float)(duty) / 100);  
 
+    read_wifi_mode_from_nvs();
     // read_wifi_credentials(); 
+
 }
 
 /* ----------------------------------------------------------------------------------------- */
@@ -86,17 +95,27 @@ void app_main(void)
 {   
     init_esp();
 
-    set_current_state(INIT);
-    // set_current_state(AP_MODE);
+    int compare_string_with_wifi_mode = strcmp(wifi_mode,  "STA");
 
-    set_button();
+    // set_current_state(INIT);
 
-    xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
+
+    if (compare_string_with_wifi_mode == 0) {
+      set_current_state(INIT);
+      xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
+    } else {
+      set_current_state(AP_MODE);
+      write_wifi_mode_in_nvs("STA");
+
+      static httpd_handle_t server = NULL;    
+
+      // /* Start the server for the first time */
+      server = start_webserver();
+    }
+
+
     
     
-
-    // /* Start the server for the first time */
-    // server = start_webserver();
    
 }
 

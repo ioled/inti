@@ -1,5 +1,5 @@
 /*  Read wifi credentials from NVS (ioled_data partition)  */
-void read_wifi_credentials(){
+void read_wifi_credentials_from_nvs(){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
     
@@ -60,17 +60,15 @@ void read_wifi_credentials(){
         // Close
         nvs_close(my_handle);
         
-        // wifi_ssid = wifi_ssid_readed;
         strcpy(wifi_ssid, wifi_ssid_readed);
         strcpy(wifi_pass, wifi_pass_readed);
     }
 }
 
 /*  Write wifi credentials in NVS (ioled_data partition)  */
-void write_wifi_credentials(char wifi_ssid_to_write[32], char wifi_pass_to_write[64]){
+void write_wifi_credentials_in_nvs(char wifi_ssid_to_write[32], char wifi_pass_to_write[64]){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
-    // esp_err_t err = nvs_flash_init();
 
     if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
@@ -97,8 +95,6 @@ void write_wifi_credentials(char wifi_ssid_to_write[32], char wifi_pass_to_write
                 ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
         }
         
-        // err = nvs_commit(my_handle);        
-
         ESP_LOGI(TAG, "Updating wifi pass credential in NVS ... ");
 
         err = nvs_set_str(my_handle, "wifi_pass", wifi_pass_to_write);
@@ -128,7 +124,6 @@ void write_wifi_credentials(char wifi_ssid_to_write[32], char wifi_pass_to_write
 void write_duty_in_nvs(int duty_to_save){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
-    // esp_err_t err = nvs_flash_init();
 
     if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
@@ -169,7 +164,6 @@ void write_duty_in_nvs(int duty_to_save){
 int read_duty_from_nvs(){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
-    // esp_err_t err = nvs_flash_init();
 
     if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
@@ -201,6 +195,98 @@ int read_duty_from_nvs(){
         // Close
         nvs_close(my_handle);
         return duty_in_nvs;
+    }
+}
+
+/*  Read wifi mode from NVS (ioled_data partition) saved previously
+    wifi_mode = "STA": mode station
+    wifi_mode = "AP" : mode AP  */ 
+void read_wifi_mode_from_nvs(){
+    //Initialize NVS iOLED partition
+    esp_err_t err = nvs_flash_init_partition("ioled_data");
+
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        err = nvs_flash_init_partition("ioled_data");
+    }
+    ESP_ERROR_CHECK(err);
+
+    // Open
+    nvs_handle_t my_handle;
+    err = nvs_open("storage", NVS_READWRITE, &my_handle);
+    if (err != ESP_OK) {
+        printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
+    } else {            
+        // Read
+        ESP_LOGI(TAG, "Reading wifi mode from NVS ... ");
+
+        char wifi_mode_examplle [32] = "STA or AP";
+
+        char wifi_mode_readed [32];
+        size_t required_size = sizeof(wifi_mode_examplle);
+
+        err = nvs_get_str(my_handle, "wifi_mode", wifi_mode_readed, &required_size);
+
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Wifi Mode = %s\n", wifi_mode_readed);
+                break;
+            case ESP_ERR_NVS_NOT_FOUND:
+                ESP_LOGI(TAG, "The value is not initialized yet!\n");
+                break;
+            default :
+                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+                      
+        // Close
+        nvs_close(my_handle);
+
+        strcpy(wifi_mode, wifi_mode_readed);
+    }
+}
+
+/*  Write wifi mode from NVS (ioled_data partition) saved previously
+    wifi_mode = "STA": mode station
+    wifi_mode = "AP" : mode AP  */ 
+void write_wifi_mode_in_nvs(char wifi_mode_to_write[10]){
+    //Initialize NVS iOLED partition
+    esp_err_t err = nvs_flash_init_partition("ioled_data");
+
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        err = nvs_flash_init_partition("ioled_data");
+    }
+    ESP_ERROR_CHECK(err);
+
+    // Open
+    nvs_handle_t my_handle;
+    err = nvs_open("storage", NVS_READWRITE, &my_handle);
+    if (err != ESP_OK) {
+        printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
+    } else {            
+        // Write
+        ESP_LOGI(TAG, "Updating wifi mode in NVS ... ");
+
+        err = nvs_set_str(my_handle, "wifi_mode", wifi_mode_to_write);
+        
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Wifi Mode: %s\n", wifi_mode_to_write);
+                break;
+            default :
+                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+
+        err = nvs_commit(my_handle);        
+ 
+        // Commit written value.
+        // After setting any values, nvs_commit() must be called to ensure changes are written
+        // to flash storage. Implementations may write to storage at other times,
+        // but this is not guaranteed.
+        err = nvs_commit(my_handle);        
+
+        // Close
+        nvs_close(my_handle);
     }
 }
     
