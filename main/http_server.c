@@ -150,6 +150,10 @@ static esp_err_t set_wifi_credentials_handler(httpd_req_t *req)
         httpd_resp_send_chunk(req, buf, ret);
         remaining -= ret;
 
+        /* Log data received */
+        ESP_LOGI(TAG, "[/setwificredentials][Req]");
+        ESP_LOGI(TAG, "%.*s", ret, buf);
+
         cJSON *body = cJSON_Parse(buf);
 
         cJSON *ssid = cJSON_GetObjectItemCaseSensitive(body, "ssid");
@@ -160,9 +164,9 @@ static esp_err_t set_wifi_credentials_handler(httpd_req_t *req)
 
         write_wifi_credentials_in_nvs(str_ssid, str_pass);
 
-        /* Log data received */
-        ESP_LOGI(TAG, "[/setwificredentials][Req]");
-        ESP_LOGI(TAG, "%.*s", ret, buf);
+        ESP_LOGI(TAG, "Restarting now ...");
+        fflush(stdout);
+        esp_restart();
     }
 
     // End response

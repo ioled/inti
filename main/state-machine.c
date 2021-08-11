@@ -5,7 +5,7 @@ enum States
     INIT,
     AP_MODE,
     SEARCHING_NETWORK,
-    CONNECTED_TO_MQTT
+    CONNECTED_TO_MQTT,
 };
 
 enum States current_state;
@@ -31,7 +31,7 @@ void state_machine() {
         case CONNECTED_TO_MQTT:
             ESP_LOGI(TAG,"Change state to: CONNECTED_TO_MQTT");
             turn_strip_led_color(HARD);
-            break;
+            break;        
         default:
             ESP_LOGI(TAG," ");        
     }

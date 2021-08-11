@@ -11,7 +11,7 @@ void apply_command(char* command_from_iot_core)
     compare_string_with_ota_result = strcmp(command_from_iot_core,  "\"ota\"");
 
     if (compare_string_with_reset_result == 0) {
-        ESP_LOGI(TAG, "Restarting now.");
+        ESP_LOGI(TAG, "Restarting now ...");
         fflush(stdout);
         esp_restart();
     } 

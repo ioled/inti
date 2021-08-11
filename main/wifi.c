@@ -106,6 +106,8 @@ void wifi_init_sta(void)
     } else if (bits & WIFI_FAIL_BIT) {
         ESP_LOGE(TAG, "Failed to connect to SSID: %s, password: %s",
                  wifi_ssid, wifi_pass);
+        turn_strip_led_color(RED);
+
     } else {
         ESP_LOGE(TAG, "UNEXPECTED EVENT");
     }

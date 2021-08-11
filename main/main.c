@@ -27,9 +27,9 @@ char wifi_pass[64] = "dkYxgw2C4mmm";
 char wifi_mode[10] = "STA";
 
 #include "constants.c"
+#include "neopixel.c"
 #include "wifi.c"
 #include "sntp.c"
-#include "neopixel.c"
 #include "state-machine.c"
 #include "nvs.c"
 #include "gpio_handler.c"
@@ -85,7 +85,8 @@ static void init_esp(void)
     apply_led_percent((float)(duty) / 100);  
 
     read_wifi_mode_from_nvs();
-    // read_wifi_credentials(); 
+    
+    read_wifi_credentials_from_nvs(); 
 
 }
 
