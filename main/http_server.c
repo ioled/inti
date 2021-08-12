@@ -162,11 +162,11 @@ static esp_err_t set_wifi_credentials_handler(httpd_req_t *req)
         char* str_ssid_pointer = cJSON_Print(ssid);
         char* str_pass_pointer = cJSON_Print(pass);
 
-        // char str_wifi[32] = (char [32])str_ssid_pointer;
-
+        // Delete first element of array "
         char* str_ssid_fixed = str_ssid_pointer + 1;
         char* str_pass_fixed = str_pass_pointer + 1;
 
+        // Delete last element of array "
         str_ssid_fixed[strlen(str_ssid_fixed) - 1] = '\0';
         str_pass_fixed[strlen(str_pass_fixed) - 1] = '\0';
 

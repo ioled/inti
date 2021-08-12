@@ -160,7 +160,7 @@ void write_duty_in_nvs(int duty_to_save){
     }
 }
 
-/*  Read duty from NVS (ioled_data partition)  saved previously */ 
+/*  Read duty from NVS (ioled_data partition) saved previously */ 
 int read_duty_from_nvs(){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
@@ -199,8 +199,9 @@ int read_duty_from_nvs(){
 }
 
 /*  Read wifi mode from NVS (ioled_data partition) saved previously
-    wifi_mode = "STA": mode station
-    wifi_mode = "AP" : mode AP  */ 
+    "STA": mode station
+    "AP" : mode AP  
+*/ 
 void read_wifi_mode_from_nvs(){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
@@ -246,8 +247,9 @@ void read_wifi_mode_from_nvs(){
 }
 
 /*  Write wifi mode from NVS (ioled_data partition) saved previously
-    wifi_mode = "STA": mode station
-    wifi_mode = "AP" : mode AP  */ 
+    "STA": mode station
+    "AP" : mode AP  
+*/ 
 void write_wifi_mode_in_nvs(char wifi_mode_to_write[10]){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
