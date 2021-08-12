@@ -18,9 +18,9 @@ void read_wifi_credentials_from_nvs(){
         // Read wifi ssid
         ESP_LOGI(TAG, "Reading wifi ssid credential from NVS ... ");
 
-        char wifi_ssid_example [32] = "wifi network ssid example";
+        char wifi_ssid_example[32] = "wifi network ssid example";
 
-        char wifi_ssid_readed [32];
+        char wifi_ssid_readed[32];
         size_t required_size = sizeof(wifi_ssid_example);
 
         err = nvs_get_str(my_handle, "wifi_ssid", wifi_ssid_readed, &required_size);
@@ -39,9 +39,9 @@ void read_wifi_credentials_from_nvs(){
         // Read wifi pass
         ESP_LOGI(TAG, "Reading wifi pass credential from NVS ... ");
 
-        char wifi_pass_example [64] = "wifi network pass example";
+        char wifi_pass_example[64] = "wifi network pass example";
 
-        char wifi_pass_readed [64];
+        char wifi_pass_readed[64];
         required_size = sizeof(wifi_pass_example);
 
         err = nvs_get_str(my_handle, "wifi_pass", wifi_pass_readed, &required_size);

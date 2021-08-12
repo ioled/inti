@@ -85,6 +85,8 @@ static void init_esp(void)
     apply_led_percent((float)(duty) / 100);  
 
     read_wifi_mode_from_nvs();
+
+    // write_wifi_credentials_in_nvs(wifi_ssid, wifi_pass);
     
     read_wifi_credentials_from_nvs(); 
 

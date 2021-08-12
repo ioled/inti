@@ -158,19 +158,34 @@ static esp_err_t set_wifi_credentials_handler(httpd_req_t *req)
 
         cJSON *ssid = cJSON_GetObjectItemCaseSensitive(body, "ssid");
         cJSON *pass = cJSON_GetObjectItemCaseSensitive(body, "pass");
+
+        char* str_ssid_pointer = cJSON_Print(ssid);
+        char* str_pass_pointer = cJSON_Print(pass);
+
+        // char str_wifi[32] = (char [32])str_ssid_pointer;
+
+        char* str_ssid_fixed = str_ssid_pointer + 1;
+        char* str_pass_fixed = str_pass_pointer + 1;
+
+        str_ssid_fixed[strlen(str_ssid_fixed) - 1] = '\0';
+        str_pass_fixed[strlen(str_pass_fixed) - 1] = '\0';
+
+        memcpy(wifi_ssid, str_ssid_fixed, sizeof(wifi_ssid));
+        memcpy(wifi_pass, str_pass_fixed, sizeof(wifi_pass));
         
-        char* str_ssid = cJSON_Print(ssid);
-        char* str_pass = cJSON_Print(pass);
-
-        write_wifi_credentials_in_nvs(str_ssid, str_pass);
-
-        ESP_LOGI(TAG, "Restarting now ...");
-        fflush(stdout);
-        esp_restart();
+        write_wifi_credentials_in_nvs(wifi_ssid, wifi_pass);
+    
     }
 
     // End response
     httpd_resp_send_chunk(req, NULL, 0);
+
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+
+    ESP_LOGI(TAG, "Restarting now ...");
+    fflush(stdout);
+    esp_restart();
+
     return ESP_OK;
 }
 
