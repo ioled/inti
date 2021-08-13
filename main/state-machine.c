@@ -1,14 +1,6 @@
 
 
-enum States
-{
-    INIT,
-    AP_MODE,
-    SEARCHING_NETWORK,
-    CONNECTED_TO_MQTT,
-};
 
-enum States current_state;
 
 void state_machine() {
     switch(current_state){
@@ -33,9 +25,23 @@ void state_machine() {
             break;
         case CONNECTED_TO_MQTT:
             ESP_LOGI(TAG,"Change state to: CONNECTED_TO_MQTT");
-            turn_strip_led_color(HARD);
-            
-            break;        
+            turn_strip_led_color(GREEN);
+
+            break;  
+
+        case ERROR:
+            ESP_LOGI(TAG,"Change state to: ERROR");
+            turn_strip_led_color(RED);
+
+            while (1) {            
+                vTaskDelay(5 * 60 * 1000 / portTICK_PERIOD_MS);
+                ESP_LOGI(TAG, "Restarting now ..."); 
+                fflush(stdout);
+                esp_restart();               
+            }
+
+            break; 
+
         default:
             ESP_LOGI(TAG," ");        
     }

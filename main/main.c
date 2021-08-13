@@ -26,6 +26,19 @@ char wifi_pass[64] = "dkYxgw2C4mmm";
 /* Wifi mode */
 char wifi_mode[10] = "STA";
 
+enum States
+{
+    INIT,
+    AP_MODE,
+    SEARCHING_NETWORK,
+    CONNECTED_TO_MQTT,
+    ERROR
+};
+
+enum States current_state;
+
+void set_current_state(enum States input_current_state);
+
 #include "constants.c"
 #include "neopixel.c"
 #include "wifi.c"
@@ -106,14 +119,7 @@ void app_main(void)
       // /* Start the server for the first time */
       server = start_webserver();
     }
-
-    while (1) {            
-      vTaskDelay(1* 60 * 1000 / portTICK_PERIOD_MS);
-      ESP_LOGI(TAG, "Restarting now ..."); 
-      fflush(stdout);
-      esp_restart();               
-    }
-
+    
 }
 
 
