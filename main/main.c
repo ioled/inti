@@ -107,6 +107,13 @@ void app_main(void)
       server = start_webserver();
     }
 
+    while (1) {            
+      vTaskDelay(1* 60 * 1000 / portTICK_PERIOD_MS);
+      ESP_LOGI(TAG, "Restarting now ..."); 
+      fflush(stdout);
+      esp_restart();               
+    }
+
 }
 
 

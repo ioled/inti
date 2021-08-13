@@ -30,10 +30,10 @@ void read_wifi_credentials_from_nvs(){
                 ESP_LOGI(TAG, "Wifi SSID = %s\n", wifi_ssid_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
-                ESP_LOGI(TAG, "The value is not initialized yet!\n");
+                ESP_LOGE(TAG, "The value is not initialized yet!\n");
                 break;
             default :
-                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
         }
 
         // Read wifi pass
@@ -189,7 +189,7 @@ int read_duty_from_nvs(){
                 ESP_LOGI(TAG, "Duty = %d\n", duty_in_nvs);
                 break;
             default :
-                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
         }
                       
         // Close
@@ -233,10 +233,10 @@ void read_wifi_mode_from_nvs(){
                 ESP_LOGI(TAG, "Wifi Mode = %s\n", wifi_mode_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
-                ESP_LOGI(TAG, "The value is not initialized yet!\n");
+                ESP_LOGE(TAG, "The value is not initialized yet!\n");
                 break;
             default :
-                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
         }
                       
         // Close
@@ -276,7 +276,7 @@ void write_wifi_mode_in_nvs(char wifi_mode_to_write[10]){
                 ESP_LOGI(TAG, "Wifi Mode: %s\n", wifi_mode_to_write);
                 break;
             default :
-                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
         }
 
         err = nvs_commit(my_handle);        

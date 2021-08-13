@@ -17,7 +17,7 @@ static void gpio_task(void* arg)
     uint32_t io_num;
     for(;;) {
         if(xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
-            printf("GPIO[%d] intr, val: %d\n", io_num, gpio_get_level(io_num));
+            ESP_LOGE(TAG, "GPIO[%d] intr, val: %d\n", io_num, gpio_get_level(io_num));
             if(gpio_get_level(io_num) == 0){
                 // set_current_state(AP_MODE);
                 write_wifi_mode_in_nvs("AP");
