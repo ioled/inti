@@ -1,6 +1,8 @@
-#define GPIO_INPUT_IO_0     0
+#define INTERNAL_BUTTON     0
+#define EXTERNAL_BUTTON    14
+
 #define ESP_INTR_FLAG_DEFAULT 0
-#define GPIO_INPUT_PIN_SEL  1ULL<<GPIO_INPUT_IO_0
+#define GPIO_INPUT_PIN_SEL  1ULL<<INTERNAL_BUTTON
 
 static xQueueHandle gpio_evt_queue = NULL;
 
@@ -25,6 +27,7 @@ static void gpio_task(void* arg)
         }
     }
 }
+
 /* Create xTask action with button */
 static void set_button(){
     // static httpd_handle_t server = NULL;    
@@ -41,16 +44,24 @@ static void set_button(){
     gpio_config(&io_conf);
 
     //change gpio intrrupt type for one pin
-    gpio_set_intr_type(GPIO_INPUT_IO_0, GPIO_INTR_ANYEDGE);
+    gpio_set_intr_type(INTERNAL_BUTTON, GPIO_INTR_ANYEDGE);
+
+    //change gpio intrrupt type for one pin
+    gpio_set_intr_type(EXTERNAL_BUTTON, GPIO_INTR_ANYEDGE);
 
     //create a queue to handle gpio event from isr
     gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
+    
     //start gpio task
     xTaskCreate(gpio_task, "gpio_task", 2048, NULL, 10, NULL);
 
     //install gpio isr service
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
+    
     //hook isr handler for specific gpio pin
-    gpio_isr_handler_add(GPIO_INPUT_IO_0, gpio_isr_handler, (void*) GPIO_INPUT_IO_0);
+    gpio_isr_handler_add(INTERNAL_BUTTON, gpio_isr_handler, (void*) INTERNAL_BUTTON);
+
+    //hook isr handler for specific gpio pin
+    gpio_isr_handler_add(EXTERNAL_BUTTON, gpio_isr_handler, (void*) EXTERNAL_BUTTON);
 }
 

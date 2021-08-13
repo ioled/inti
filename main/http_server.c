@@ -225,49 +225,6 @@ esp_err_t http_404_error_handler(httpd_req_t *req, httpd_err_code_t err)
     return ESP_FAIL;
 }
 
-/* An HTTP PUT handler. This demonstrates realtime
- * registration and deregistration of URI handlers
- */
-static esp_err_t ctrl_put_handler(httpd_req_t *req)
-{
-    char buf;
-    int ret;
-
-    if ((ret = httpd_req_recv(req, &buf, 1)) <= 0) {
-        if (ret == HTTPD_SOCK_ERR_TIMEOUT) {
-            httpd_resp_send_408(req);
-        }
-        return ESP_FAIL;
-    }
-
-    if (buf == '0') {
-        /* URI handlers can be unregistered using the uri string */
-        ESP_LOGI(TAG, "Unregistering /hello and /echo URIs");
-        httpd_unregister_uri(req->handle, "/hello");
-        httpd_unregister_uri(req->handle, "/echo");
-        /* Register the custom error handler */
-        httpd_register_err_handler(req->handle, HTTPD_404_NOT_FOUND, http_404_error_handler);
-    }
-    else {
-        ESP_LOGI(TAG, "Registering /hello and /echo URIs");
-        httpd_register_uri_handler(req->handle, &hello);
-        httpd_register_uri_handler(req->handle, &echo);
-        /* Unregister custom error handler */
-        httpd_register_err_handler(req->handle, HTTPD_404_NOT_FOUND, NULL);
-    }
-
-    /* Respond with empty body */
-    httpd_resp_send(req, NULL, 0);
-    return ESP_OK;
-}
-
-static const httpd_uri_t ctrl = {
-    .uri       = "/ctrl",
-    .method    = HTTP_PUT,
-    .handler   = ctrl_put_handler,
-    .user_ctx  = NULL
-};
-
 static httpd_handle_t start_webserver(void)
 {
     httpd_handle_t server = NULL;
@@ -281,7 +238,6 @@ static httpd_handle_t start_webserver(void)
         ESP_LOGI(TAG, "Registering URI handlers");
         httpd_register_uri_handler(server, &hello);
         httpd_register_uri_handler(server, &echo);
-        httpd_register_uri_handler(server, &ctrl);    
         httpd_register_uri_handler(server, &set_wifi_credentials);    
 
         return server;
@@ -291,29 +247,6 @@ static httpd_handle_t start_webserver(void)
     return NULL;
 }
 
-static void stop_webserver(httpd_handle_t server)
-{
-    // Stop the httpd server
-    httpd_stop(server);
-}
 
-static void disconnect_handler(void* arg, esp_event_base_t event_base,
-                               int32_t event_id, void* event_data)
-{
-    httpd_handle_t* server = (httpd_handle_t*) arg;
-    if (*server) {
-        ESP_LOGI(TAG, "Stopping webserver");
-        stop_webserver(*server);
-        *server = NULL;
-    }
-}
 
-static void connect_handler(void* arg, esp_event_base_t event_base,
-                            int32_t event_id, void* event_data)
-{
-    httpd_handle_t* server = (httpd_handle_t*) arg;
-    if (*server == NULL) {
-        ESP_LOGI(TAG, "Starting webserver");
-        *server = start_webserver();
-    }
-}
+

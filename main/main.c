@@ -35,10 +35,7 @@ char wifi_mode[10] = "STA";
 #include "gpio_handler.c"
 #include "led.c"
 #include "google-iot-core.c"
-
 #include "http_server.c"
-
-/* ------------------------ */
 
 static void init_esp(void)
 {      
@@ -77,7 +74,7 @@ static void init_esp(void)
     ESP_LOGI(TAG, "Initializing signal led in pin %d\n", SIGNAL_LED_GPIO);
     example_ledc_init();
 
-    ESP_LOGI(TAG, "Initializing button in pin %d\n", GPIO_INPUT_IO_0);
+    ESP_LOGI(TAG, "Initializing button in pin %d\n", INTERNAL_BUTTON);
     set_button();
 
     int duty = read_duty_from_nvs();
@@ -104,7 +101,7 @@ void app_main(void)
       set_current_state(AP_MODE);
       write_wifi_mode_in_nvs("STA");
 
-      static httpd_handle_t server = NULL;    
+      httpd_handle_t server = NULL;    
 
       // /* Start the server for the first time */
       server = start_webserver();
