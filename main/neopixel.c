@@ -6,7 +6,7 @@ enum Colors
     BLUE,
     GREEN,
     IOLED_GREEN,
-    HARD,
+    THANOS,
     RED,
     ORANGE,
     PURPLE
@@ -62,7 +62,7 @@ static void turn_strip_led_color(enum Colors color)
             pStrip_a->refresh(pStrip_a, 100);
             break;
 
-        case HARD:
+        case THANOS:
             /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
             pStrip_a->set_pixel(pStrip_a, 0, 16, 0, 0);
             pStrip_a->set_pixel(pStrip_a, 1, 0, 16, 0);
