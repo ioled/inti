@@ -32,7 +32,7 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     IOTC_UNUSED(user_data);
 
     char *publish_topic = NULL;
-    asprintf(&publish_topic, PUBLISH_TOPIC_STATE, CONFIG_GIOT_DEVICE_ID);
+    asprintf(&publish_topic, PUBLISH_TOPIC_STATE, device_id);
     char *publish_message = NULL;
     // asprintf(&publish_message, TEMPERATURE_DATA, MIN_TEMP + rand() % 10);
     ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"", TEMPERATURE_DATA, publish_topic);
@@ -163,12 +163,12 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
         /* Publish immediately upon connect. 'publish_function' is defined
            in this example file and invokes the IoTC API to publish a
            message. */
-        asprintf(&subscribe_topic_command, SUBSCRIBE_TOPIC_COMMAND, CONFIG_GIOT_DEVICE_ID);
+        asprintf(&subscribe_topic_command, SUBSCRIBE_TOPIC_COMMAND, device_id);
         ESP_LOGI(TAG, "Subscribing to topic: \"%s\"", subscribe_topic_command);
         iotc_subscribe(in_context_handle, subscribe_topic_command, IOTC_MQTT_QOS_AT_LEAST_ONCE,
                        &iotc_mqttlogic_subscribe_commands_callback, /*user_data=*/NULL);
 
-        asprintf(&subscribe_topic_config, SUBSCRIBE_TOPIC_CONFIG, CONFIG_GIOT_DEVICE_ID);
+        asprintf(&subscribe_topic_config, SUBSCRIBE_TOPIC_CONFIG, device_id);
         ESP_LOGI(TAG, "Subscribing to topic: \"%s\"", subscribe_topic_config);
         iotc_subscribe(in_context_handle, subscribe_topic_config, IOTC_MQTT_QOS_AT_LEAST_ONCE,
                        &iotc_mqttlogic_subscribe_config_callback, /*user_data=*/NULL);
@@ -291,7 +291,7 @@ static void mqtt_task(void *pvParameters)
     }
 
     char *device_path = NULL;
-    asprintf(&device_path, DEVICE_PATH, CONFIG_GIOT_PROJECT_ID, CONFIG_GIOT_LOCATION, CONFIG_GIOT_REGISTRY_ID, CONFIG_GIOT_DEVICE_ID);
+    asprintf(&device_path, DEVICE_PATH, CONFIG_GIOT_PROJECT_ID, CONFIG_GIOT_LOCATION, CONFIG_GIOT_REGISTRY_ID, device_id);
     iotc_connect(iotc_context, NULL, jwt, device_path, connection_timeout,
                  keepalive_timeout, &on_connection_state_changed);
     free(device_path);

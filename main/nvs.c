@@ -291,4 +291,90 @@ void write_wifi_mode_in_nvs(char wifi_mode_to_write[10]){
         nvs_close(my_handle);
     }
 }
+
+void read_device_id_from_nvs(){
+    //Initialize NVS iOLED partition
+    esp_err_t err = nvs_flash_init_partition("ioled_data");
+
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        err = nvs_flash_init_partition("ioled_data");
+    }
+    ESP_ERROR_CHECK(err);
+
+    // Open
+    nvs_handle_t my_handle;
+    err = nvs_open("storage", NVS_READWRITE, &my_handle);
+    if (err != ESP_OK) {
+        printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
+    } else {            
+        // Read
+        ESP_LOGI(TAG, "Reading device id from NVS ... ");
+
+        char device_id_example [15] = "esp32_XXXXXX";
+
+        char device_id_readed [15];
+        size_t required_size = sizeof(device_id_example);
+
+        err = nvs_get_str(my_handle, "device_id", device_id_readed, &required_size);
+
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Device id = %s\n", device_id_readed);
+                break;
+            case ESP_ERR_NVS_NOT_FOUND:
+                ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                break;
+            default :
+                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+                      
+        // Close
+        nvs_close(my_handle);
+
+        strcpy(device_id, device_id_readed);
+    }
+}
+
+void write_device_id_in_nvs(char device_id_to_write[15]){
+    //Initialize NVS iOLED partition
+    esp_err_t err = nvs_flash_init_partition("ioled_data");
+
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        err = nvs_flash_init_partition("ioled_data");
+    }
+    ESP_ERROR_CHECK(err);
+
+    // Open
+    nvs_handle_t my_handle;
+    err = nvs_open("storage", NVS_READWRITE, &my_handle);
+    if (err != ESP_OK) {
+        printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
+    } else {            
+        // Write
+        ESP_LOGI(TAG, "Updating device id in NVS ... ");
+
+        err = nvs_set_str(my_handle, "device_id", device_id_to_write);
+        
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Device id: %s\n", device_id_to_write);
+                break;
+            default :
+                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+
+        err = nvs_commit(my_handle);        
+ 
+        // Commit written value.
+        // After setting any values, nvs_commit() must be called to ensure changes are written
+        // to flash storage. Implementations may write to storage at other times,
+        // but this is not guaranteed.
+        err = nvs_commit(my_handle);        
+
+        // Close
+        nvs_close(my_handle);
+    }
+}
     

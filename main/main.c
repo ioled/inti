@@ -26,6 +26,9 @@ char wifi_pass[64] = "dkYxgw2C4mmm";
 /* Wifi mode */
 char wifi_mode[10] = "STA";
 
+/* Device id */
+char device_id[15] = "esp32_349A4C";
+
 enum States
 {
     INIT,
@@ -96,6 +99,9 @@ static void init_esp(void)
     read_wifi_mode_from_nvs();
     
     read_wifi_credentials_from_nvs(); 
+
+    read_device_id_from_nvs();
+    // write_device_id_in_nvs(device_id);
 
 }
 
