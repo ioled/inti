@@ -16,7 +16,7 @@ void state_machine() {
             break;
         case SEARCHING_NETWORK:
             ESP_LOGI(TAG, "Change state to: SEARCHING_NETWORK");   
-            turn_strip_led_color(WHITE);
+            turn_strip_led_color(ORANGE);
             
             for (int i = 60; i > 0; i-- ){
                 ESP_LOGI(TAG, "Restarting in %d seconds ...", i);
@@ -38,12 +38,14 @@ void state_machine() {
             ESP_LOGI(TAG,"Change state to: ERROR");
             turn_strip_led_color(RED);
 
-            while (1) {            
-                vTaskDelay(5 * 60 * 1000 / portTICK_PERIOD_MS);
-                ESP_LOGI(TAG, "Restarting now ..."); 
-                fflush(stdout);
-                esp_restart();               
+            for (int i = 120; i > 0; i-- ){
+                ESP_LOGI(TAG, "Restarting in %d seconds ...", i);
+                vTaskDelay(1 * 1000 / portTICK_PERIOD_MS);
             }
+
+            ESP_LOGI(TAG, "Restarting now ..."); 
+            fflush(stdout);
+            esp_restart(); 
 
             break; 
 

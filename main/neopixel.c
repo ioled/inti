@@ -7,7 +7,8 @@ enum Colors
     GREEN,
     IOLED_GREEN,
     HARD,
-    RED
+    RED,
+    ORANGE
 };
 
 /*  Turn on the neopixel strip in the color set by the enum Colors type parameter*/
@@ -81,6 +82,18 @@ static void turn_strip_led_color(enum Colors color)
             /* Refresh the strip to send data */
             pStrip_a->refresh(pStrip_a, 100);
             break;
+        
+        case ORANGE:
+            /* Set the LED pixel using RGB from 0 (0%) to 255 (100%) for each color */
+            pStrip_a->set_pixel(pStrip_a, 0, 130, 30, 0);
+            pStrip_a->set_pixel(pStrip_a, 1, 130, 30, 0);
+            pStrip_a->set_pixel(pStrip_a, 2, 130, 30, 0);
+            pStrip_a->set_pixel(pStrip_a, 3, 130, 30, 0);
+
+            /* Refresh the strip to send data */
+            pStrip_a->refresh(pStrip_a, 100);
+            break;
+
 
         default:
             ESP_LOGI(TAG," ");   
