@@ -1,7 +1,3 @@
-
-
-
-
 void state_machine() {
     switch(current_state){
         case INIT:
@@ -20,7 +16,16 @@ void state_machine() {
             break;
         case SEARCHING_NETWORK:
             ESP_LOGI(TAG, "Change state to: SEARCHING_NETWORK");   
-            turn_strip_led_color(WHITE);   
+            turn_strip_led_color(WHITE);
+            
+            for (int i = 60; i > 0; i-- ){
+                ESP_LOGI(TAG, "Restarting in %d seconds ...", i);
+                vTaskDelay(1 * 1000 / portTICK_PERIOD_MS);
+            }
+
+            ESP_LOGI(TAG, "Restarting now ..."); 
+            fflush(stdout);
+            esp_restart(); 
 
             break;
         case CONNECTED_TO_MQTT:
