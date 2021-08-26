@@ -334,6 +334,8 @@ void write_device_id_in_nvs(char device_id_to_write[15]){
     }
 }
 
+/*  Read device id (necesary to connect with IoT Core) from NVS (ioled_data partition).
+    Save in memory device_id if device_id is not initialized yet  */
 void read_device_id_from_nvs(){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
@@ -422,7 +424,8 @@ void write_key_pem_in_nvs(char key_pem_to_write[250]){
     }
 }
 
-/*  Read key pem (necesary to connect with IoT Core) from NVS (ioled_data partition)  */
+/*  Read key pem (necesary to connect with IoT Core) from NVS (ioled_data partition)  
+    Save in memory key pem if key pem is not initialized yet  */
 void read_key_pem_from_nvs(){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");

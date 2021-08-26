@@ -30,8 +30,9 @@ char wifi_mode[10] = "STA";
 char device_id[15] = "esp32_FA6004";
 
 /* Private key */
-char key_in_c[250] = "-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIO2bNae0F+QLntKlVW9Zqu3obxulG2I2Lq+2s9ydpEkjoAoGCCqGSM49\nAwEHoUQDQgAEPnNNIpSJMl5A95YPDejtk1kGhHOWiHhffHzow++Fq8rIAsvbX8YN\nd+W7+TxpLXtWLkovpjL8wr8aLTYIZvHZ5Q==\n-----END EC PRIVATE KEY-----";
+char key_in_c[250];
 
+/* Key readed from certs/private_key.pem */
 extern char ec_pv_key_start[] asm("_binary_private_key_pem_start");
 
 enum States
