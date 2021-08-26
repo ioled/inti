@@ -292,50 +292,6 @@ void write_wifi_mode_in_nvs(char wifi_mode_to_write[10]){
     }
 }
 
-void read_device_id_from_nvs(){
-    //Initialize NVS iOLED partition
-    esp_err_t err = nvs_flash_init_partition("ioled_data");
-
-    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        err = nvs_flash_init_partition("ioled_data");
-    }
-    ESP_ERROR_CHECK(err);
-
-    // Open
-    nvs_handle_t my_handle;
-    err = nvs_open("storage", NVS_READWRITE, &my_handle);
-    if (err != ESP_OK) {
-        printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
-    } else {            
-        // Read
-        ESP_LOGI(TAG, "Reading device id from NVS ... ");
-
-        char device_id_example [15] = "esp32_XXXXXX";
-
-        char device_id_readed [15];
-        size_t required_size = sizeof(device_id_example);
-
-        err = nvs_get_str(my_handle, "device_id", device_id_readed, &required_size);
-
-        switch (err) {
-            case ESP_OK:
-                ESP_LOGI(TAG, "Device id = %s\n", device_id_readed);
-                break;
-            case ESP_ERR_NVS_NOT_FOUND:
-                ESP_LOGE(TAG, "The value is not initialized yet!\n");
-                break;
-            default :
-                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
-        }
-                      
-        // Close
-        nvs_close(my_handle);
-
-        strcpy(device_id, device_id_readed);
-    }
-}
-
 void write_device_id_in_nvs(char device_id_to_write[15]){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
@@ -378,7 +334,7 @@ void write_device_id_in_nvs(char device_id_to_write[15]){
     }
 }
 
-void read_key_pem_from_nvs(){
+void read_device_id_from_nvs(){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
 
@@ -395,21 +351,22 @@ void read_key_pem_from_nvs(){
         printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
     } else {            
         // Read
-        ESP_LOGI(TAG, "Reading private_key.pem from NVS ... ");
+        ESP_LOGI(TAG, "Reading device id from NVS ... ");
 
-        char key_pem_example [250] = "";
+        char device_id_example [15] = "esp32_XXXXXX";
 
-        char key_pem_readed [250];
-        size_t required_size = sizeof(key_pem_example);
+        char device_id_readed [15];
+        size_t required_size = sizeof(device_id_example);
 
-        err = nvs_get_str(my_handle, "key_pem", key_pem_readed, &required_size);
+        err = nvs_get_str(my_handle, "device_id", device_id_readed, &required_size);
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Key pem = %s\n", key_pem_readed);
+                ESP_LOGI(TAG, "Device id = %s\n", device_id_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
                 ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                write_device_id_in_nvs(device_id);
                 break;
             default :
                 ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
@@ -418,10 +375,11 @@ void read_key_pem_from_nvs(){
         // Close
         nvs_close(my_handle);
 
-        strcpy(key_in_c, key_pem_readed);
+        strcpy(device_id, device_id_readed);
     }
 }
 
+/*  Write key pem (necesary to connect with IoT Core) in NVS (ioled_data partition)  */
 void write_key_pem_in_nvs(char key_pem_to_write[250]){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
@@ -463,4 +421,51 @@ void write_key_pem_in_nvs(char key_pem_to_write[250]){
         nvs_close(my_handle);
     }
 }
+
+/*  Read key pem (necesary to connect with IoT Core) from NVS (ioled_data partition)  */
+void read_key_pem_from_nvs(){
+    //Initialize NVS iOLED partition
+    esp_err_t err = nvs_flash_init_partition("ioled_data");
+
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        err = nvs_flash_init_partition("ioled_data");
+    }
+    ESP_ERROR_CHECK(err);
+
+    // Open
+    nvs_handle_t my_handle;
+    err = nvs_open("storage", NVS_READWRITE, &my_handle);
+    if (err != ESP_OK) {
+        printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
+    } else {            
+        // Read
+        ESP_LOGI(TAG, "Reading private_key.pem from NVS ... ");
+
+        char key_pem_example [250] = "";
+
+        char key_pem_readed [250];
+        size_t required_size = sizeof(key_pem_example);
+
+        err = nvs_get_str(my_handle, "key_pem", key_pem_readed, &required_size);
+
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Key pem = %s\n", key_pem_readed);
+                break;
+            case ESP_ERR_NVS_NOT_FOUND:
+                ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                write_key_pem_in_nvs(ec_pv_key_start);
+                break;
+            default :
+                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+                      
+        // Close
+        nvs_close(my_handle);
+
+        strcpy(key_in_c, key_pem_readed);
+    }
+}
+
     

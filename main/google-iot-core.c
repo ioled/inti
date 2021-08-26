@@ -3,8 +3,6 @@
 
 #include "commands.c"
 
-extern const uint8_t ec_pv_key_start[] asm("_binary_private_key_pem_start");
-
 #define IOTC_UNUSED(x) (void)(x)
 
 #define DEVICE_PATH "projects/%s/locations/%s/registries/%s/devices/%s"
@@ -245,7 +243,7 @@ static void mqtt_task(void *pvParameters)
     iotc_crypto_key_data_t iotc_connect_private_key_data;
     iotc_connect_private_key_data.crypto_key_signature_algorithm = IOTC_CRYPTO_KEY_SIGNATURE_ALGORITHM_ES256;
     iotc_connect_private_key_data.crypto_key_union_type = IOTC_CRYPTO_KEY_UNION_TYPE_PEM;
-    iotc_connect_private_key_data.crypto_key_union.key_pem.key = (char *) key_in_c;
+    iotc_connect_private_key_data.crypto_key_union.key_pem.key = (char *) ec_pv_key_start;
 
     /* initialize iotc library and create a context to use to connect to the
     * GCP IoT Core Service. */

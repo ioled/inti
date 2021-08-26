@@ -32,6 +32,8 @@ char device_id[15] = "esp32_FA6004";
 /* Private key */
 char key_in_c[250] = "-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIO2bNae0F+QLntKlVW9Zqu3obxulG2I2Lq+2s9ydpEkjoAoGCCqGSM49\nAwEHoUQDQgAEPnNNIpSJMl5A95YPDejtk1kGhHOWiHhffHzow++Fq8rIAsvbX8YN\nd+W7+TxpLXtWLkovpjL8wr8aLTYIZvHZ5Q==\n-----END EC PRIVATE KEY-----";
 
+extern char ec_pv_key_start[] asm("_binary_private_key_pem_start");
+
 enum States
 {
     INIT,
@@ -104,11 +106,8 @@ static void init_esp(void)
     read_wifi_credentials_from_nvs(); 
 
     read_device_id_from_nvs();
-    // write_device_id_in_nvs(device_id);
 
-    // write_key_pem_in_nvs(ec_pv_key_start);
     read_key_pem_from_nvs();
-
 }
 
 /* ----------------------------------------------------------------------------------------- */
