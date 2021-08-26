@@ -51,7 +51,7 @@ void read_wifi_credentials_from_nvs(){
                 ESP_LOGI(TAG, "Wifi PASS = %s\n", wifi_pass_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
-                ESP_LOGI(TAG, "The value is not initialized yet!\n");
+                ESP_LOGE(TAG, "The value is not initialized yet!\n");
                 break;
             default :
                 ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
@@ -454,7 +454,7 @@ void read_key_pem_from_nvs(){
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Key pem = %s\n", key_pem_readed);
+                ESP_LOGI(TAG, "Key pem = \n%s", key_pem_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
                 ESP_LOGE(TAG, "The value is not initialized yet!\n");

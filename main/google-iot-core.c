@@ -10,7 +10,8 @@
 #define SUBSCRIBE_TOPIC_CONFIG "/devices/%s/config"
 #define PUBLISH_TOPIC_EVENT "/devices/%s/events"
 #define PUBLISH_TOPIC_STATE "/devices/%s/state"
-#define TEMPERATURE_DATA "{\"hum\": 11, \"temp\": 9.0, \"duty\": 0.5}"
+#define DATA_TO_PUBLISH "{\"hum\": 11, \"temp\": 9.0, \"duty\": %d}"
+
 #define MIN_TEMP 20
 
 char *subscribe_topic_command, *subscribe_topic_config;
@@ -29,10 +30,10 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     char *publish_topic = NULL;
     asprintf(&publish_topic, PUBLISH_TOPIC_STATE, device_id);
     char *publish_message = NULL;
-    // asprintf(&publish_message, TEMPERATURE_DATA, MIN_TEMP + rand() % 10);
-    ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"", TEMPERATURE_DATA, publish_topic);
+    asprintf(&publish_message, DATA_TO_PUBLISH, MIN_TEMP + rand() % 10);
+    ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"", publish_message, publish_topic);
 
-    iotc_publish(context_handle, publish_topic, TEMPERATURE_DATA,
+    iotc_publish(context_handle, publish_topic, publish_message,
                  iotc_example_qos,
                  /*callback=*/NULL, /*user_data=*/NULL);
     free(publish_topic);
@@ -243,7 +244,7 @@ static void mqtt_task(void *pvParameters)
     iotc_crypto_key_data_t iotc_connect_private_key_data;
     iotc_connect_private_key_data.crypto_key_signature_algorithm = IOTC_CRYPTO_KEY_SIGNATURE_ALGORITHM_ES256;
     iotc_connect_private_key_data.crypto_key_union_type = IOTC_CRYPTO_KEY_UNION_TYPE_PEM;
-    iotc_connect_private_key_data.crypto_key_union.key_pem.key = (char *) ec_pv_key_start;
+    iotc_connect_private_key_data.crypto_key_union.key_pem.key = (char *) key_in_c;
 
     /* initialize iotc library and create a context to use to connect to the
     * GCP IoT Core Service. */
