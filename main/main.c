@@ -58,6 +58,7 @@ void set_current_state(enum States input_current_state);
 #include "led.c"
 #include "google-iot-core.c"
 #include "http_server.c"
+#include "sensors.c"
 
 static void init_esp(void)
 {      
