@@ -4,10 +4,16 @@
 #define SCL_GPIO 33
 
 void temperature_filter(float temperature_to_filter){
-    ESP_LOGI(TAG, "Temperature to filter %.2f\n", temperature_to_filter);
+    // ESP_LOGI(TAG, "Temperature to filter %.2f\n", temperature_to_filter);
     temperature = temperature_to_filter;
 }
 
+void humidity_filter(float humidity_to_filter){
+    // ESP_LOGI(TAG, "humidity to filter %.2f\n", humidity_to_filter);
+    humidity = humidity_to_filter;
+}
+
+/*  Task to sensor humidity and temperatura */
 void task_sensor(void *pvParameters)
 {
     i2c_dev_t dev;
@@ -24,15 +30,17 @@ void task_sensor(void *pvParameters)
         if (res != ESP_OK)
             printf("Could not measure temperature: %d (%s)\n", res, esp_err_to_name(res));
         else {
-            printf("Temperature: %.2f\n", val);
+            // printf("Temperature: %.2f\n", val);
             temperature_filter(val);
         }
-        
+
         res = si7021_measure_humidity(&dev, &val);
         if (res != ESP_OK)
             printf("Could not measure humidity: %d (%s)\n", res, esp_err_to_name(res));
-        else
-            printf("Humidity: %.2f\n", val);
+        else {
+            // printf("Humidity: %.2f\n", val);
+            humidity_filter(val);
+        }
 
         vTaskDelay(pdMS_TO_TICKS(1000));
     }

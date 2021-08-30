@@ -12,7 +12,7 @@ enum Colors
     PURPLE
 };
 
-/*  Turn on the neopixel strip in the color set by the enum Colors type parameter*/
+/*  Turn on the neopixel strip in the color set by the enum Colors type parameter */
 static void turn_strip_led_color(enum Colors color)
 {   
     switch(color){
