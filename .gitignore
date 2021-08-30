@@ -6,3 +6,5 @@ sdkconfig.old
 /main/certs
 
 *.pem
+
+private_key.pem
