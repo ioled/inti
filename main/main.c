@@ -99,6 +99,9 @@ static void init_esp(void)
 
     ESP_LOGI(TAG, "Initializing button in pin %d\n", INTERNAL_BUTTON);
     set_button();
+    
+    ESP_LOGI(TAG, "Initializing i2c SDA %d and SCL %d\n", SDA_GPIO, SCL_GPIO);
+    ESP_ERROR_CHECK(i2cdev_init());
 
     int duty = read_duty_from_nvs();
     apply_led_percent((float)(duty) / 100);  
@@ -123,6 +126,10 @@ void app_main(void)
     if (compare_string_with_wifi_mode == 0) {
       set_current_state(INIT);
       xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
+          
+          
+      xTaskCreatePinnedToCore(task_sensor, "sensors_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL, APP_CPU_NUM);
+
     } else {
       set_current_state(AP_MODE);
       write_wifi_mode_in_nvs("STA");
