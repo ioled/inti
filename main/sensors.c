@@ -3,6 +3,11 @@
 #define SDA_GPIO 32
 #define SCL_GPIO 33
 
+void temperature_filter(float temperature_to_filter){
+    ESP_LOGI(TAG, "Temperature to filter %.2f\n", temperature_to_filter);
+    temperature = temperature_to_filter;
+}
+
 void task_sensor(void *pvParameters)
 {
     i2c_dev_t dev;
@@ -18,9 +23,11 @@ void task_sensor(void *pvParameters)
         res = si7021_measure_temperature(&dev, &val);
         if (res != ESP_OK)
             printf("Could not measure temperature: %d (%s)\n", res, esp_err_to_name(res));
-        else
+        else {
             printf("Temperature: %.2f\n", val);
-
+            temperature_filter(val);
+        }
+        
         res = si7021_measure_humidity(&dev, &val);
         if (res != ESP_OK)
             printf("Could not measure humidity: %d (%s)\n", res, esp_err_to_name(res));
@@ -30,3 +37,5 @@ void task_sensor(void *pvParameters)
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
+
+

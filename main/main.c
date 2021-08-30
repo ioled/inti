@@ -35,6 +35,12 @@ char key_in_c[250];
 /* Key readed from certs/private_key.pem */
 extern char ec_pv_key_start[] asm("_binary_private_key_pem_start");
 
+/* Temperature */
+float temperature = 20.0;
+
+/* Humidity */
+float humidity = 50.0;
+
 enum States
 {
     INIT,

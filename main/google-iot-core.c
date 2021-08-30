@@ -10,7 +10,7 @@
 #define SUBSCRIBE_TOPIC_CONFIG "/devices/%s/config"
 #define PUBLISH_TOPIC_EVENT "/devices/%s/events"
 #define PUBLISH_TOPIC_STATE "/devices/%s/state"
-#define DATA_TO_PUBLISH "{\"hum\": 11, \"temp\": 9.0, \"duty\": %f}"
+#define DATA_TO_PUBLISH "{\"hum\": %f, \"temp\": 9.0, \"duty\": %f}"
 
 #define MIN_TEMP 20
 
@@ -32,7 +32,7 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     char *publish_message = NULL;
     
     int duty = read_duty_from_nvs();
-    asprintf(&publish_message, DATA_TO_PUBLISH, (float)(duty) / 100);
+    asprintf(&publish_message, DATA_TO_PUBLISH,temperature, (float)(duty) / 100);
     ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
 
     iotc_publish(context_handle, publish_topic, publish_message,
