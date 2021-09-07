@@ -37,4 +37,19 @@ static void obtain_time(void)
 
     ESP_LOGI(TAG, "Time is set...");
     ESP_LOGI(TAG, "The current date/time in Chile is: %s", strftime_buf);
+
+    // setup datetime: 2016-10-09 13:50:10
+    i2c_dev_t dev;
+    memset(&dev, 0, sizeof(i2c_dev_t));
+    ESP_ERROR_CHECK(ds3231_init_desc(&dev, 0, SDA_GPIO, SCL_GPIO));
+
+    struct tm time = {
+        .tm_year = 116, //since 1900 (2016 - 1900)
+        .tm_mon  = 9,  // 0-based
+        .tm_mday = 9,
+        .tm_hour = 13,
+        .tm_min  = 50,
+        .tm_sec  = 10
+    };
+    ESP_ERROR_CHECK(ds3231_set_time(&dev, &time));
 }

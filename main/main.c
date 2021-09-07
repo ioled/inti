@@ -57,6 +57,8 @@ void set_current_state(enum States input_current_state);
 #include "constants.c"
 #include "neopixel.c"
 #include "wifi.c"
+#include "sensors.c"
+#include "rtc.c"
 #include "sntp.c"
 #include "state-machine.c"
 #include "nvs.c"
@@ -64,7 +66,7 @@ void set_current_state(enum States input_current_state);
 #include "led.c"
 #include "google-iot-core.c"
 #include "http_server.c"
-#include "sensors.c"
+
 
 static void init_esp(void)
 {      
@@ -119,6 +121,9 @@ static void init_esp(void)
     read_device_id_from_nvs();
 
     read_key_pem_from_nvs();
+
+    // init_rtc();
+
 }
 
 /* ----------------------------------------------------------------------------------------- */
@@ -135,6 +140,8 @@ void app_main(void)
           
           
       xTaskCreatePinnedToCore(task_sensor, "sensors_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL, APP_CPU_NUM);
+      xTaskCreate(time_task, "time_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+
 
     } else {
       set_current_state(AP_MODE);
