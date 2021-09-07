@@ -62,7 +62,11 @@ void iotc_mqttlogic_subscribe_config_callback(
         sub_message[params->message.temporary_payload_data_length] = '\0';
         ESP_LOGI(TAG, "Message Payload: %s ", sub_message);
 
-        char* str = NULL;
+        char* duty_str = NULL;
+        char* timer_state_str = NULL;
+        char* timer_on_str = NULL;
+        char* timer_off_str = NULL;
+
         float percent_from_iot_core;
 
         // Parse data from IoT Core. Go to end if receive null from IoT Core
@@ -80,11 +84,24 @@ void iotc_mqttlogic_subscribe_config_callback(
         cJSON *esp = cJSON_GetObjectItemCaseSensitive(json, "esp");
         
         cJSON *led1 = cJSON_GetObjectItemCaseSensitive(esp, "led1");
-        
         cJSON *duty = cJSON_GetObjectItemCaseSensitive(led1, "duty");
 
-        str = cJSON_Print(duty);
-        ESP_LOGI(TAG, "duty: %s \n", str);
+        cJSON *timer = cJSON_GetObjectItemCaseSensitive(esp, "timer");
+        cJSON *timer_state = cJSON_GetObjectItemCaseSensitive(timer, "timerState");
+        cJSON *timer_on = cJSON_GetObjectItemCaseSensitive(timer, "timerOn");
+        cJSON *timer_off = cJSON_GetObjectItemCaseSensitive(timer, "timerOff");
+
+        duty_str = cJSON_Print(duty);
+        ESP_LOGI(TAG, "duty: %s \n", duty_str);
+
+        timer_state_str = cJSON_Print(timer_state);
+        ESP_LOGI(TAG, "timer state: %s \n", timer_state_str);
+
+        timer_on_str = cJSON_Print(timer_on);
+        ESP_LOGI(TAG, "timer on: %s \n", timer_on_str);
+
+        timer_off_str = cJSON_Print(timer_off);
+        ESP_LOGI(TAG, "timer off: %s \n", timer_off_str);
 
         percent_from_iot_core = duty->valuedouble;
 
