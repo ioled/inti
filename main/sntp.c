@@ -44,12 +44,12 @@ static void obtain_time(void)
     ESP_ERROR_CHECK(ds3231_init_desc(&dev, 0, SDA_GPIO, SCL_GPIO));
 
     struct tm time = {
-        .tm_year = 116, //since 1900 (2016 - 1900)
-        .tm_mon  = 9,  // 0-based
-        .tm_mday = 9,
-        .tm_hour = 13,
-        .tm_min  = 50,
-        .tm_sec  = 10
+        .tm_year = (int) timeinfo.tm_year, //since 1900 (2016 - 1900)
+        .tm_mon  = (int) timeinfo.tm_mon,  // 0-based
+        .tm_mday = (int) timeinfo.tm_mday,
+        .tm_hour = (int) timeinfo.tm_hour,
+        .tm_min  = (int) timeinfo.tm_min,
+        .tm_sec  = (int) timeinfo.tm_sec
     };
     ESP_ERROR_CHECK(ds3231_set_time(&dev, &time));
 }
