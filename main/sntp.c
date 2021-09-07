@@ -5,7 +5,7 @@ static void initialize_sntp(void)
 {
     ESP_LOGI(TAG, "Initializing SNTP");
     sntp_setoperatingmode(SNTP_OPMODE_POLL);
-    sntp_setservername(0, "ntp.shoa.cl");
+    sntp_setservername(0, "time.google.com");
     sntp_init();
 }
 
@@ -27,10 +27,11 @@ static void obtain_time(void)
         time(&now);
 
         // Set timezone to Chile Standard Time
-        setenv("TZ", "GMT-3", 1);
+        setenv("TZ", "CLST3", 1);
         tzset();
 
         localtime_r(&now, &timeinfo);
+        
     }
     strftime(strftime_buf, sizeof(strftime_buf), "%c", &timeinfo);
 
