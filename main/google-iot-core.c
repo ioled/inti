@@ -87,20 +87,20 @@ void iotc_mqttlogic_subscribe_config_callback(
         cJSON *duty = cJSON_GetObjectItemCaseSensitive(led1, "duty");
 
         cJSON *timer = cJSON_GetObjectItemCaseSensitive(esp, "timer");
-        cJSON *timer_state = cJSON_GetObjectItemCaseSensitive(timer, "timerState");
-        cJSON *time_on = cJSON_GetObjectItemCaseSensitive(timer, "timeOn");
-        cJSON *time_off = cJSON_GetObjectItemCaseSensitive(timer, "timeOff");
+        cJSON *timer_state_json = cJSON_GetObjectItemCaseSensitive(timer, "timerState");
+        cJSON *time_on_json = cJSON_GetObjectItemCaseSensitive(timer, "timeOn");
+        cJSON *time_off_json = cJSON_GetObjectItemCaseSensitive(timer, "timeOff");
 
         duty_str = cJSON_Print(duty);
         ESP_LOGI(TAG, "duty: %s \n", duty_str);
 
-        timer_state_str = cJSON_Print(timer_state);
+        timer_state_str = cJSON_Print(timer_state_json);
         ESP_LOGI(TAG, "timer state: %s \n", timer_state_str);
 
-        time_on_str = cJSON_Print(time_on);
+        time_on_str = cJSON_Print(time_on_json);
         ESP_LOGI(TAG, "time on: %s \n", time_on_str);
 
-        time_off_str = cJSON_Print(time_off);
+        time_off_str = cJSON_Print(time_off_json);
         ESP_LOGI(TAG, "time off: %s \n", time_off_str);
 
         percent_from_iot_core = duty->valuedouble;
@@ -108,6 +108,15 @@ void iotc_mqttlogic_subscribe_config_callback(
         write_duty_in_nvs((int)(percent_from_iot_core * 100));
 
         write_timer_configuration_in_nvs(timer_state_str, time_on_str, time_off_str);
+
+        int compare_string_with_timer_state;
+        compare_string_with_timer_state = strcmp(timer_state_str,  "true");
+                
+        if (compare_string_with_timer_state == 0){
+            int hour_on = (time_on_str[1] - 48) * 10 + (time_on_str[2] - 48);
+            int hour_off = (time_off_str[1] - 48) * 10 + (time_off_str[2] - 48);
+            create_vector_time_hour(hour_on , hour_off);
+        }
 
         apply_led_percent(percent_from_iot_core);
         end: 
