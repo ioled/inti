@@ -75,6 +75,8 @@ void set_current_state(enum States input_current_state);
 #include "led.c"
 #include "google-iot-core.c"
 #include "http_server.c"
+#include "timer.c"
+
 
 
 static void init_esp(void)
@@ -133,6 +135,10 @@ static void init_esp(void)
 
     read_timer_configuration_from_nvs();
 
+    create_vector_time_hour(10 , 22);
+
+    xTaskCreate(time_task, "time_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+
 }
 
 /* ----------------------------------------------------------------------------------------- */
@@ -149,8 +155,6 @@ void app_main(void)
           
           
       xTaskCreatePinnedToCore(task_sensor, "sensors_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL, APP_CPU_NUM);
-      xTaskCreate(time_task, "time_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-
 
     } else {
       set_current_state(AP_MODE);

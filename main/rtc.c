@@ -11,12 +11,12 @@ void time_task()
         vTaskDelay(pdMS_TO_TICKS(250));
 
         struct tm time = {
-            .tm_year = 116, //since 1900 (2016 - 1900)
-            .tm_mon  = 9,  // 0-based
-            .tm_mday = 9,
-            .tm_hour = 13,
-            .tm_min  = 50,
-            .tm_sec  = 10
+            .tm_year = 121, //since 1900 (2016 - 1900)
+            .tm_mon  = 8,  // 0-based
+            .tm_mday = 7,
+            .tm_hour = 22,
+            .tm_min  = 16,
+            .tm_sec  = 0
         };
 
         if (ds3231_get_time(&dev, &time) != ESP_OK)
@@ -25,11 +25,7 @@ void time_task()
             continue;
         }
 
-        /* float is used in printf(). you need non-default configuration in
-         * sdkconfig for ESP8266, which is enabled by default for this
-         * example. see sdkconfig.defaults.esp8266
-         */
-        printf("%04d-%02d-%02d %02d:%02d:%02d \n", time.tm_year + 1900 /*Add 1900 for better readability*/, time.tm_mon + 1,
+        printf("%04d-%02d-%02d %02d:%02d:%02d \n", time.tm_year + 1900, time.tm_mon + 1,
             time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
     }
 }
