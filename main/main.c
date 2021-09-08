@@ -61,12 +61,18 @@ enum States
 
 enum States current_state;
 
+// TODO: Agregar esto a un archivo de header
 void set_current_state(enum States input_current_state);
+
+void example_ledc_init(void);
+void apply_led_percent(float percent_from_iot_core);
+int read_duty_from_nvs();
 
 #include "constants.c"
 #include "neopixel.c"
 #include "wifi.c"
 #include "sensors.c"
+#include "timer.c"
 #include "rtc.c"
 #include "sntp.c"
 #include "state-machine.c"
@@ -75,9 +81,6 @@ void set_current_state(enum States input_current_state);
 #include "led.c"
 #include "google-iot-core.c"
 #include "http_server.c"
-#include "timer.c"
-
-
 
 static void init_esp(void)
 {      

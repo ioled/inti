@@ -27,6 +27,17 @@ void time_task()
 
         printf("%04d-%02d-%02d %02d:%02d:%02d \n", time.tm_year + 1900, time.tm_mon + 1,
             time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
+        
+        int compare_string_with_timer_state;
+        compare_string_with_timer_state = strcmp(timer_state,  "true");
+        if (compare_string_with_timer_state == 0){
+            if (y_hour[time.tm_hour] == 1){
+                int duty = read_duty_from_nvs();
+                apply_led_percent((float)(duty) / 100);   
+          } else {
+                apply_led_percent(0);   
+            }
+        }
     }
 }
     
