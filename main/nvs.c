@@ -562,7 +562,7 @@ void read_timer_configuration_from_nvs(){
 }
 
 /*  Write timer configuration in NVS (ioled_data partition)  */
-void write_timer_configuration_in_nvs(char timer_state_to_write[10], char timer_on_to_write[10], char timer_off_to_write[10]){
+void write_timer_configuration_in_nvs(char timer_state_to_write[10], char time_on_to_write[10], char time_off_to_write[10]){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
 
@@ -579,31 +579,45 @@ void write_timer_configuration_in_nvs(char timer_state_to_write[10], char timer_
         printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
     } else {            
         // Write
-        ESP_LOGI(TAG, "Updating wifi ssid credential in NVS ... ");
+        ESP_LOGI(TAG, "Updating timer state in NVS ... ");
 
-        err = nvs_set_str(my_handle, "wifi_ssid", wifi_ssid_to_write);
+        err = nvs_set_str(my_handle, "timer_state", timer_state_to_write);
         
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Wifi SSID: %s\n", wifi_ssid_to_write);
+                ESP_LOGI(TAG, "Timer state: %s\n", timer_state_to_write);
                 break;
             default :
                 ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
         }
         
-        ESP_LOGI(TAG, "Updating wifi pass credential in NVS ... ");
+        ESP_LOGI(TAG, "Updating time on in NVS ... ");
 
-        err = nvs_set_str(my_handle, "wifi_pass", wifi_pass_to_write);
+        err = nvs_set_str(my_handle, "time_on", time_on_to_write);
         
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Wifi Pass: %s\n", wifi_pass_to_write);
+                ESP_LOGI(TAG, "Time on: %s\n", time_on_to_write);
                 break;
             default :
                 ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
         }
 
-        err = nvs_commit(my_handle);        
+        err = nvs_commit(my_handle);  
+
+        ESP_LOGI(TAG, "Updating time off in NVS ... ");
+
+        err = nvs_set_str(my_handle, "time_off", time_off_to_write);
+        
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Time on: %s\n", time_off_to_write);
+                break;
+            default :
+                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+
+        err = nvs_commit(my_handle);       
  
         // Commit written value.
         // After setting any values, nvs_commit() must be called to ensure changes are written
