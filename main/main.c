@@ -66,7 +66,7 @@ void set_current_state(enum States input_current_state);
 
 void example_ledc_init(void);
 void apply_led_percent(float percent_from_iot_core, int print_log);
-int read_duty_from_nvs();
+int read_duty_from_nvs(int print_log);
 
 #include "constants.c"
 #include "neopixel.c"
@@ -108,7 +108,7 @@ static void init_esp(void)
 
       create_vector_time_hour(hour_on , hour_off);
     } else {
-      int duty = read_duty_from_nvs();
+      int duty = read_duty_from_nvs(1);
       apply_led_percent((float)(duty) / 100, 1);  
     }
 

@@ -161,7 +161,7 @@ void write_duty_in_nvs(int duty_to_save){
 }
 
 /*  Read duty from NVS (ioled_data partition) saved previously */ 
-int read_duty_from_nvs(){
+int read_duty_from_nvs(int print_log){
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
 
@@ -179,17 +179,21 @@ int read_duty_from_nvs(){
         return 0;
     } else {            
         // Read
-        ESP_LOGI(TAG, "Reading duty from NVS ... ");
+        if(print_log == 1) {
+            ESP_LOGI(TAG, "Reading duty from NVS ... ");
+        }
 
         int32_t duty_in_nvs;
         err = nvs_get_i32(my_handle, "duty", &duty_in_nvs);
-
-        switch (err) {
-            case ESP_OK:
-                ESP_LOGI(TAG, "Duty = %d\n", duty_in_nvs);
-                break;
-            default :
-                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        
+        if(print_log == 1) {
+            switch (err) {
+                case ESP_OK:
+                    ESP_LOGI(TAG, "Duty = %d\n", duty_in_nvs);
+                    break;
+                default :
+                    ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+            }
         }
                       
         // Close

@@ -31,8 +31,8 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     asprintf(&publish_topic, PUBLISH_TOPIC_STATE, device_id);
     char *publish_message = NULL;
     
-    int duty = read_duty_from_nvs();
-    asprintf(&publish_message, DATA_TO_PUBLISH,humidity, temperature, (float)(duty) / 100);
+    int duty = read_duty_from_nvs(1);
+    asprintf(&publish_message, DATA_TO_PUBLISH,humidity, temperature, ((float)(duty) / 100) * y_hour[global_time_hour]);
     ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
 
     iotc_publish(context_handle, publish_topic, publish_message,

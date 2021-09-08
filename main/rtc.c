@@ -1,5 +1,7 @@
 #include <ds3231.h>
 
+int global_time_hour;
+
 void time_task()
 {
     i2c_dev_t dev;
@@ -27,12 +29,13 @@ void time_task()
 
         // printf("%04d-%02d-%02d %02d:%02d:%02d \n", time.tm_year + 1900, time.tm_mon + 1,
         //     time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
+        global_time_hour = time.tm_hour;
         
         int compare_string_with_timer_state;
         compare_string_with_timer_state = strcmp(timer_state,  "true");
         if (compare_string_with_timer_state == 0){
             if (y_hour[time.tm_hour] == 1){
-                int duty = read_duty_from_nvs();
+                int duty = read_duty_from_nvs(0);
                 apply_led_percent((float)(duty) / 100, 0);   
           } else {
                 apply_led_percent(0, 0);   
