@@ -41,6 +41,15 @@ float temperature = 20.0;
 /* Humidity */
 float humidity = 50.0;
 
+/* Timer state */
+char timer_state[10] = "false";
+
+/* Time on */
+char timer_on[10] = "00:00";
+
+/* Time off */
+char timer_off[10] = "00:00";
+
 enum States
 {
     INIT,

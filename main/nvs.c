@@ -471,4 +471,147 @@ void read_key_pem_from_nvs(){
     }
 }
 
+/*  Read timer configuration from NVS (ioled_data partition)  */
+void read_timer_configuration_from_nvs(){
+    //Initialize NVS iOLED partition
+    esp_err_t err = nvs_flash_init_partition("ioled_data");
     
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        err = nvs_flash_init_partition("ioled_data");
+    }
+    ESP_ERROR_CHECK(err);
+
+    // Open
+    nvs_handle_t my_handle;
+    err = nvs_open("storage", NVS_READWRITE, &my_handle);
+    if (err != ESP_OK) {
+        ESP_LOGI(TAG, "Error (%s) opening NVS handle!\n", esp_err_to_name(err));
+    } else {
+        // Read timer state from timer property
+        ESP_LOGI(TAG, "Reading timer state from NVS ... ");
+
+        char timer_state_example[10] = "false";
+
+        char timer_state_readed[32];
+        size_t required_size = sizeof(timer_state_example);
+
+        err = nvs_get_str(my_handle, "timer_state", timer_state_readed, &required_size);
+
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Timer state = %s\n", timer_state_readed);
+                break;
+            case ESP_ERR_NVS_NOT_FOUND:
+                ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                break;
+            default :
+                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+
+        // Read time on from timer property 
+        ESP_LOGI(TAG, "Reading time on from NVS ... ");
+
+        char timer_on_example[10] = "00:00";
+
+        char timer_on_readed[10];
+        required_size = sizeof(timer_on_example);
+
+        err = nvs_get_str(my_handle, "timer_on", timer_on_readed, &required_size);
+
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Timer on= %s\n", timer_on_readed);
+                break;
+            case ESP_ERR_NVS_NOT_FOUND:
+                ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                break;
+            default :
+                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+
+        // Read time off from timer property 
+        ESP_LOGI(TAG, "Reading time on from NVS ... ");
+
+        char timer_off_example[10] = "00:00";
+
+        char timer_off_readed[10];
+        required_size = sizeof(timer_off_example);
+
+        err = nvs_get_str(my_handle, "timer_off", timer_off_readed, &required_size);
+
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Timer off= %s\n", timer_off_readed);
+                break;
+            case ESP_ERR_NVS_NOT_FOUND:
+                ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                break;
+            default :
+                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+
+        // Close
+        nvs_close(my_handle);
+        
+        strcpy(timer_state, timer_state_readed);
+        strcpy(timer_on, timer_on_readed);
+        strcpy(timer_off, timer_off_readed);
+
+    }
+}
+
+/*  Write timer configuration in NVS (ioled_data partition)  */
+void write_timer_configuration_in_nvs(char timer_state_to_write[10], char timer_on_to_write[10], char timer_off_to_write[10]){
+    //Initialize NVS iOLED partition
+    esp_err_t err = nvs_flash_init_partition("ioled_data");
+
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        err = nvs_flash_init_partition("ioled_data");
+    }
+    ESP_ERROR_CHECK(err);
+
+    // Open
+    nvs_handle_t my_handle;
+    err = nvs_open("storage", NVS_READWRITE, &my_handle);
+    if (err != ESP_OK) {
+        printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
+    } else {            
+        // Write
+        ESP_LOGI(TAG, "Updating wifi ssid credential in NVS ... ");
+
+        err = nvs_set_str(my_handle, "wifi_ssid", wifi_ssid_to_write);
+        
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Wifi SSID: %s\n", wifi_ssid_to_write);
+                break;
+            default :
+                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+        
+        ESP_LOGI(TAG, "Updating wifi pass credential in NVS ... ");
+
+        err = nvs_set_str(my_handle, "wifi_pass", wifi_pass_to_write);
+        
+        switch (err) {
+            case ESP_OK:
+                ESP_LOGI(TAG, "Wifi Pass: %s\n", wifi_pass_to_write);
+                break;
+            default :
+                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+        }
+
+        err = nvs_commit(my_handle);        
+ 
+        // Commit written value.
+        // After setting any values, nvs_commit() must be called to ensure changes are written
+        // to flash storage. Implementations may write to storage at other times,
+        // but this is not guaranteed.
+        err = nvs_commit(my_handle);        
+
+        // Close
+        nvs_close(my_handle);
+    }
+}
