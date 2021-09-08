@@ -3,6 +3,7 @@ int time_hour[24] = {0 , 1 , 2 , 3 , 4 , 5, 6 , 7, 8, 9, 10, 11, 12, 13, 14, 15,
 
 /* Create vector time hour necessary for timer */
 void create_vector_time_hour(int hour_on, int hour_off){   
+    ESP_LOGI(TAG, "Creating vector time hour, time on: %d, time off: %d", hour_on, hour_off);
     if (hour_off > hour_on){
         for(int i = 0; i < 24; i++){
             y_hour[i] = 0;

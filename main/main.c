@@ -45,10 +45,10 @@ float humidity = 50.0;
 char timer_state[10] = "false";
 
 /* Time on */
-char timer_on[10] = "00:00";
+char time_on[10] = "00:00";
 
 /* Time off */
-char timer_off[10] = "00:00";
+char time_off[10] = "00:00";
 
 enum States
 {
@@ -135,7 +135,10 @@ static void init_esp(void)
 
     read_timer_configuration_from_nvs();
 
-    create_vector_time_hour(10 , 22);
+    int hour_on = (time_on[1] - 48) * 10 + (time_on[2] - 48);
+    int hour_off = (time_off[1] - 48) * 10 + (time_off[2] - 48);
+
+    create_vector_time_hour(hour_on , hour_off);
 
     xTaskCreate(time_task, "time_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
 

@@ -512,16 +512,16 @@ void read_timer_configuration_from_nvs(){
         // Read time on from timer property 
         ESP_LOGI(TAG, "Reading time on from NVS ... ");
 
-        char timer_on_example[10] = "00:00";
+        char time_on_example[10] = "00:00";
 
-        char timer_on_readed[10];
-        required_size = sizeof(timer_on_example);
+        char time_on_readed[10];
+        required_size = sizeof(time_on_example);
 
-        err = nvs_get_str(my_handle, "time_on", timer_on_readed, &required_size);
+        err = nvs_get_str(my_handle, "time_on", time_on_readed, &required_size);
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Timer on= %s\n", timer_on_readed);
+                ESP_LOGI(TAG, "Time on= %s\n", time_on_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
                 ESP_LOGE(TAG, "The value is not initialized yet!\n");
@@ -533,16 +533,16 @@ void read_timer_configuration_from_nvs(){
         // Read time off from timer property 
         ESP_LOGI(TAG, "Reading time on from NVS ... ");
 
-        char timer_off_example[10] = "00:00";
+        char time_off_example[10] = "00:00";
 
-        char timer_off_readed[10];
-        required_size = sizeof(timer_off_example);
+        char time_off_readed[10];
+        required_size = sizeof(time_off_example);
 
-        err = nvs_get_str(my_handle, "time_off", timer_off_readed, &required_size);
+        err = nvs_get_str(my_handle, "time_off", time_off_readed, &required_size);
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Timer off= %s\n", timer_off_readed);
+                ESP_LOGI(TAG, "Time off= %s\n", time_off_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
                 ESP_LOGE(TAG, "The value is not initialized yet!\n");
@@ -555,8 +555,8 @@ void read_timer_configuration_from_nvs(){
         nvs_close(my_handle);
         
         strcpy(timer_state, timer_state_readed);
-        strcpy(timer_on, timer_on_readed);
-        strcpy(timer_off, timer_off_readed);
+        strcpy(time_on, time_on_readed);
+        strcpy(time_off, time_off_readed);
 
     }
 }
