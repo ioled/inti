@@ -100,20 +100,6 @@ static void init_esp(void)
 
     read_timer_configuration_from_nvs();
 
-    int compare_string_with_timer_state;
-    compare_string_with_timer_state = strcmp(timer_state,  "true");
-    if (compare_string_with_timer_state == 0){
-      int hour_on = (time_on[1] - 48) * 10 + (time_on[2] - 48);
-      int hour_off = (time_off[1] - 48) * 10 + (time_off[2] - 48);
-
-      create_vector_time_hour(hour_on , hour_off);
-    } else {
-      int duty = read_duty_from_nvs(1);
-      apply_led_percent((float)(duty) / 100, 1);  
-    }
-
-    xTaskCreate(time_task, "time_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-
     ESP_LOGI(TAG, "Initializing esp32 - iOLED Inti");
 
     /* LED strip initialization with the GPIO and pixels number*/
@@ -140,6 +126,21 @@ static void init_esp(void)
     
     ESP_LOGI(TAG, "Initializing i2c SDA %d and SCL %d\n", SDA_GPIO, SCL_GPIO);
     ESP_ERROR_CHECK(i2cdev_init());
+
+
+    int compare_string_with_timer_state;
+    compare_string_with_timer_state = strcmp(timer_state,  "true");
+    if (compare_string_with_timer_state == 0){
+      int hour_on = (time_on[1] - 48) * 10 + (time_on[2] - 48);
+      int hour_off = (time_off[1] - 48) * 10 + (time_off[2] - 48);
+
+      create_vector_time_hour(hour_on , hour_off);
+    } else {
+      int duty = read_duty_from_nvs(1);
+      apply_led_percent((float)(duty) / 100, 1);  
+    }
+
+    xTaskCreate(time_task, "time_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
 
     read_wifi_mode_from_nvs();
     
