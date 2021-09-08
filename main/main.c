@@ -131,7 +131,7 @@ static void init_esp(void)
 
     read_key_pem_from_nvs();
 
-    // init_rtc();
+    read_timer_configuration_from_nvs();
 
 }
 

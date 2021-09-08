@@ -64,8 +64,8 @@ void iotc_mqttlogic_subscribe_config_callback(
 
         char* duty_str = NULL;
         char* timer_state_str = NULL;
-        char* timer_on_str = NULL;
-        char* timer_off_str = NULL;
+        char* time_on_str = NULL;
+        char* time_off_str = NULL;
 
         float percent_from_iot_core;
 
@@ -88,8 +88,8 @@ void iotc_mqttlogic_subscribe_config_callback(
 
         cJSON *timer = cJSON_GetObjectItemCaseSensitive(esp, "timer");
         cJSON *timer_state = cJSON_GetObjectItemCaseSensitive(timer, "timerState");
-        cJSON *timer_on = cJSON_GetObjectItemCaseSensitive(timer, "timerOn");
-        cJSON *timer_off = cJSON_GetObjectItemCaseSensitive(timer, "timerOff");
+        cJSON *time_on = cJSON_GetObjectItemCaseSensitive(timer, "timeOn");
+        cJSON *time_off = cJSON_GetObjectItemCaseSensitive(timer, "timeOff");
 
         duty_str = cJSON_Print(duty);
         ESP_LOGI(TAG, "duty: %s \n", duty_str);
@@ -97,16 +97,17 @@ void iotc_mqttlogic_subscribe_config_callback(
         timer_state_str = cJSON_Print(timer_state);
         ESP_LOGI(TAG, "timer state: %s \n", timer_state_str);
 
-        timer_on_str = cJSON_Print(timer_on);
-        ESP_LOGI(TAG, "timer on: %s \n", timer_on_str);
+        time_on_str = cJSON_Print(time_on);
+        ESP_LOGI(TAG, "time on: %s \n", time_on_str);
 
-        timer_off_str = cJSON_Print(timer_off);
-        ESP_LOGI(TAG, "timer off: %s \n", timer_off_str);
+        time_off_str = cJSON_Print(time_off);
+        ESP_LOGI(TAG, "time off: %s \n", time_off_str);
 
         percent_from_iot_core = duty->valuedouble;
 
-        // Save in NVS
         write_duty_in_nvs((int)(percent_from_iot_core * 100));
+
+        write_timer_configuration_in_nvs(timer_state_str, time_on_str, time_off_str);
 
         apply_led_percent(percent_from_iot_core);
         end: 

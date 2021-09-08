@@ -517,7 +517,7 @@ void read_timer_configuration_from_nvs(){
         char timer_on_readed[10];
         required_size = sizeof(timer_on_example);
 
-        err = nvs_get_str(my_handle, "timer_on", timer_on_readed, &required_size);
+        err = nvs_get_str(my_handle, "time_on", timer_on_readed, &required_size);
 
         switch (err) {
             case ESP_OK:
@@ -538,7 +538,7 @@ void read_timer_configuration_from_nvs(){
         char timer_off_readed[10];
         required_size = sizeof(timer_off_example);
 
-        err = nvs_get_str(my_handle, "timer_off", timer_off_readed, &required_size);
+        err = nvs_get_str(my_handle, "time_off", timer_off_readed, &required_size);
 
         switch (err) {
             case ESP_OK:
