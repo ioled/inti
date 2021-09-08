@@ -116,9 +116,10 @@ void iotc_mqttlogic_subscribe_config_callback(
             int hour_on = (time_on_str[1] - 48) * 10 + (time_on_str[2] - 48);
             int hour_off = (time_off_str[1] - 48) * 10 + (time_off_str[2] - 48);
             create_vector_time_hour(hour_on , hour_off);
+        } else {
+            apply_led_percent(percent_from_iot_core , 1);
         }
 
-        apply_led_percent(percent_from_iot_core);
         end: 
             cJSON_Delete(json);                
         free(sub_message);

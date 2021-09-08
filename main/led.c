@@ -40,22 +40,28 @@ void example_ledc_init(void)
 
 /*  Apply the percentage on the signal to the LED panel and keep the relay on. 
     In case of receiving a percentage of 0, the relay is turned off.  */
-void apply_led_percent(float percent_from_iot_core)
+void apply_led_percent(float percent_from_iot_core, int print_log)
 {   
     if (percent_from_iot_core > 0) {
         // Turn on relay
-        ESP_LOGW(TAG, "Relay level: 1");
+        if(print_log == 1) {
+            ESP_LOGW(TAG, "Relay level: 1");
+        }
         gpio_set_level(RELAY_GPIO, true);
 
         float percent_to_binary = percent_from_iot_core * 8191;
         ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, (int)percent_to_binary));
 
         // Update duty to apply the new value
-        ESP_LOGW(TAG, "Apply duty %f\n", percent_from_iot_core);
+        if(print_log == 1) {
+            ESP_LOGW(TAG, "Apply duty %f\n", percent_from_iot_core);
+        }
         ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
     } else {
         // Turn off relay
-        ESP_LOGE(TAG, "Relay level: 0\n");
+        if(print_log == 1) {
+            ESP_LOGE(TAG, "Relay level: 0\n");
+        }
         gpio_set_level(RELAY_GPIO, false);
     }
 }

@@ -65,7 +65,7 @@ enum States current_state;
 void set_current_state(enum States input_current_state);
 
 void example_ledc_init(void);
-void apply_led_percent(float percent_from_iot_core);
+void apply_led_percent(float percent_from_iot_core, int print_log);
 int read_duty_from_nvs();
 
 #include "constants.c"
@@ -98,6 +98,22 @@ static void init_esp(void)
 
     get_sha256_of_partitions();
 
+    read_timer_configuration_from_nvs();
+
+    int compare_string_with_timer_state;
+    compare_string_with_timer_state = strcmp(timer_state,  "true");
+    if (compare_string_with_timer_state == 0){
+      int hour_on = (time_on[1] - 48) * 10 + (time_on[2] - 48);
+      int hour_off = (time_off[1] - 48) * 10 + (time_off[2] - 48);
+
+      create_vector_time_hour(hour_on , hour_off);
+    } else {
+      int duty = read_duty_from_nvs();
+      apply_led_percent((float)(duty) / 100, 1);  
+    }
+
+    xTaskCreate(time_task, "time_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
+
     ESP_LOGI(TAG, "Initializing esp32 - iOLED Inti");
 
     /* LED strip initialization with the GPIO and pixels number*/
@@ -125,9 +141,6 @@ static void init_esp(void)
     ESP_LOGI(TAG, "Initializing i2c SDA %d and SCL %d\n", SDA_GPIO, SCL_GPIO);
     ESP_ERROR_CHECK(i2cdev_init());
 
-    int duty = read_duty_from_nvs();
-    apply_led_percent((float)(duty) / 100);  
-
     read_wifi_mode_from_nvs();
     
     read_wifi_credentials_from_nvs(); 
@@ -135,15 +148,6 @@ static void init_esp(void)
     read_device_id_from_nvs();
 
     read_key_pem_from_nvs();
-
-    read_timer_configuration_from_nvs();
-
-    int hour_on = (time_on[1] - 48) * 10 + (time_on[2] - 48);
-    int hour_off = (time_off[1] - 48) * 10 + (time_off[2] - 48);
-
-    create_vector_time_hour(hour_on , hour_off);
-
-    xTaskCreate(time_task, "time_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
 
 }
 
