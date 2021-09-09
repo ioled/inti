@@ -1,4 +1,4 @@
-static const char *TAG = "iOLED Inti v0.16.1";
+static const char *TAG = "iOLED Inti v0.16.2";
 
 #define NEOPIXEL_GPIO 15
 #define NEOPIXEL_NUM_PIXELS 5
