@@ -30,8 +30,15 @@ static void obtain_time(void)
         setenv("TZ", "CLST3", 1);
         tzset();
 
-        localtime_r(&now, &timeinfo);
-        
+        localtime_r(&now, &timeinfo);    
+    }
+
+    if (retry >= retry_count)
+    {   
+        ESP_LOGE(TAG, "Is not posible set time"); 
+        ESP_LOGI(TAG, "Restarting now ..."); 
+        fflush(stdout);
+        esp_restart(); 
     }
     strftime(strftime_buf, sizeof(strftime_buf), "%c", &timeinfo);
 
