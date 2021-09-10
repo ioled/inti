@@ -57,6 +57,7 @@ static void obtain_time(void)
         .tm_min  = (int) timeinfo.tm_min,
         .tm_sec  = (int) timeinfo.tm_sec
     };
-
+    ESP_LOGI(TAG, "Save time in DS3231");
+    
     ESP_ERROR_CHECK(ds3231_set_time(&dev, &time));
 }

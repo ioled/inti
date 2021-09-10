@@ -225,9 +225,9 @@ void read_wifi_mode_from_nvs(){
         // Read
         ESP_LOGI(TAG, "Reading wifi mode from NVS ... ");
 
-        char wifi_mode_examplle [32] = "STA or AP";
+        char wifi_mode_examplle [11] = "STA or AP";
 
-        char wifi_mode_readed [32];
+        char wifi_mode_readed [11];
         size_t required_size = sizeof(wifi_mode_examplle);
 
         err = nvs_get_str(my_handle, "wifi_mode", wifi_mode_readed, &required_size);

@@ -84,6 +84,8 @@ int read_duty_from_nvs(int print_log);
 
 static void init_esp(void)
 {      
+    ESP_LOGI(TAG, "Initializing esp32 - iOLED Inti\n");
+
     //Initialize NVS
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -98,22 +100,18 @@ static void init_esp(void)
 
     get_sha256_of_partitions();
 
-    read_timer_configuration_from_nvs();
-
-    ESP_LOGI(TAG, "Initializing esp32 - iOLED Inti");
-
     /* LED strip initialization with the GPIO and pixels number*/
-    ESP_LOGI(TAG, "Initializing Neopixel in pin %d", NEOPIXEL_GPIO);
+    ESP_LOGI(TAG, "Initializing Neopixel in pin %d\n", NEOPIXEL_GPIO);
     pStrip_a = led_strip_init(0, NEOPIXEL_GPIO, NEOPIXEL_NUM_PIXELS);
     /* Set all LED off to clear all pixels */
     pStrip_a->clear(pStrip_a, 50);
 
-    ESP_LOGI(TAG, "Initializing integrated led in pin %d", INTEGRATED_LED_GPIO);
+    ESP_LOGI(TAG, "Initializing integrated led in pin %d\n", INTEGRATED_LED_GPIO);
     gpio_reset_pin(INTEGRATED_LED_GPIO);
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(INTEGRATED_LED_GPIO, GPIO_MODE_OUTPUT);
 
-    ESP_LOGI(TAG, "Initializing relay in pin %d", RELAY_GPIO);
+    ESP_LOGI(TAG, "Initializing relay in pin %d\n", RELAY_GPIO);
     gpio_reset_pin(RELAY_GPIO);
     /* Set the GPIO as a push/pull output */
     gpio_set_direction(RELAY_GPIO, GPIO_MODE_OUTPUT);
@@ -127,13 +125,13 @@ static void init_esp(void)
     ESP_LOGI(TAG, "Initializing i2c SDA %d and SCL %d\n", SDA_GPIO, SCL_GPIO);
     ESP_ERROR_CHECK(i2cdev_init());
 
+    read_timer_configuration_from_nvs();
 
     int compare_string_with_timer_state;
     compare_string_with_timer_state = strcmp(timer_state,  "true");
     if (compare_string_with_timer_state == 0){
       int hour_on = (time_on[1] - 48) * 10 + (time_on[2] - 48);
       int hour_off = (time_off[1] - 48) * 10 + (time_off[2] - 48);
-
       create_vector_time_hour(hour_on , hour_off);
     } else {
       int duty = read_duty_from_nvs(1);
@@ -159,14 +157,10 @@ void app_main(void)
     init_esp();
 
     int compare_string_with_wifi_mode = strcmp(wifi_mode,  "STA");
-
     if (compare_string_with_wifi_mode == 0) {
       set_current_state(INIT);
-      xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);
-          
-          
+      xTaskCreate(&mqtt_task, "mqtt_task", 8192, NULL, 5, NULL);                    
       xTaskCreatePinnedToCore(task_sensor, "sensors_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, NULL, APP_CPU_NUM);
-
     } else {
       set_current_state(AP_MODE);
       write_wifi_mode_in_nvs("STA");
