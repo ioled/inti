@@ -504,7 +504,7 @@ void read_timer_configuration_from_nvs(){
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Timer state = %s\n", timer_state_readed);
+                ESP_LOGI(TAG, "timer state = %s\n", timer_state_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
                 ESP_LOGE(TAG, "The value is not initialized yet!\n");
@@ -525,7 +525,7 @@ void read_timer_configuration_from_nvs(){
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Time on= %s\n", time_on_readed);
+                ESP_LOGI(TAG, "time on= %s\n", time_on_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
                 ESP_LOGE(TAG, "The value is not initialized yet!\n");
@@ -535,7 +535,7 @@ void read_timer_configuration_from_nvs(){
         }
 
         // Read time off from timer property 
-        ESP_LOGI(TAG, "Reading time on from NVS ... ");
+        ESP_LOGI(TAG, "Reading time off from NVS ... ");
 
         char time_off_example[10] = "00:00";
 
@@ -546,7 +546,7 @@ void read_timer_configuration_from_nvs(){
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Time off= %s\n", time_off_readed);
+                ESP_LOGI(TAG, "time off= %s\n", time_off_readed);
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
                 ESP_LOGE(TAG, "The value is not initialized yet!\n");
@@ -589,7 +589,7 @@ void write_timer_configuration_in_nvs(char timer_state_to_write[10], char time_o
         
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Timer state: %s\n", timer_state_to_write);
+                ESP_LOGI(TAG, "timer state: %s\n", timer_state_to_write);
                 break;
             default :
                 ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
@@ -601,7 +601,7 @@ void write_timer_configuration_in_nvs(char timer_state_to_write[10], char time_o
         
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Time on: %s\n", time_on_to_write);
+                ESP_LOGI(TAG, "time on: %s\n", time_on_to_write);
                 break;
             default :
                 ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
@@ -615,7 +615,7 @@ void write_timer_configuration_in_nvs(char timer_state_to_write[10], char time_o
         
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "Time on: %s\n", time_off_to_write);
+                ESP_LOGI(TAG, "time off: %s\n", time_off_to_write);
                 break;
             default :
                 ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
