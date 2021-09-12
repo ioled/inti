@@ -2,10 +2,8 @@
  <a href="https://www.ioled.cl/"><img src="logo-ioled.png" width="400"></a>
 </p>
 
-<img src="https://img.shields.io/badge/-c++-black?logo=c%2B%2B&style=social
-">
-
 # iOLED Inti
+<img src="https://img.shields.io/badge/-C-yellow?logo=C&logoColor=white&logoWidth=30">
 
 
 Este repositorio contiene el firmare de la placa IoT iOLED desarrollado en Espressif IoT Development Framework. El dispositivo se conecta a wifi  y a través del protocolo MQTT recibe y manda mensajes. 

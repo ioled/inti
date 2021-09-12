@@ -27,7 +27,7 @@ char wifi_pass[64] = "dkYxgw2C4mmm";
 char wifi_mode[10] = "STA";
 
 /* Device id */
-char device_id[15] = "esp32_F83730";
+char device_id[15] = "esp32_CA7648";
 
 /* Private key */
 char key_in_c[250];
@@ -141,7 +141,7 @@ static void init_esp(void)
     xTaskCreate(time_task, "time_task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
 
     read_wifi_mode_from_nvs();
-    
+
     read_wifi_credentials_from_nvs(); 
 
     read_device_id_from_nvs();
