@@ -43,13 +43,7 @@ void task_sensor(void *pvParameters)
         }
 
         vTaskDelay(pdMS_TO_TICKS(1000));
-
-
-       
-
-    }
-
-    
+    }    
 }
 
 
