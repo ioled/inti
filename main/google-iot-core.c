@@ -11,7 +11,7 @@
 #define PUBLISH_TOPIC_EVENT "/devices/%s/events"
 #define PUBLISH_TOPIC_STATE "/devices/%s/state"
 #define DATA_TO_PUBLISH "{\"hum\": %f, \"temp\": %f, \"duty\": %f}"
-#define STATE_TO_PUBLISH "{\"firmware_version\": \"%s\"}"
+#define STATE_TO_PUBLISH "{\"firmware_version\": \"%s\", \"sensor_healh_ok\": \"%s\"}"
 
 #define MIN_TEMP 20
 
@@ -39,31 +39,10 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     compare_string_with_timer_state = strcmp(timer_state,  "true");
                 
     if (compare_string_with_timer_state == 0){
-        asprintf(&publish_message, DATA_TO_PUBLISH,humidity, temperature, ((float)(duty) / 100) * y_hour[global_time_hour]);
+        asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100) * y_hour[global_time_hour]);
     } else {
-        asprintf(&publish_message, DATA_TO_PUBLISH,humidity, temperature, ((float)(duty) / 100));
+        asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100));
     }
-
-    ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
-
-    iotc_publish(context_handle, publish_topic, publish_message,
-                 iotc_example_qos,
-                 /*callback=*/NULL, /*user_data=*/NULL);
-    free(publish_topic);
-    free(publish_message);
-}
-
-void publish_telemetry_state(iotc_context_handle_t context_handle,
-                             iotc_timed_task_handle_t timed_task, void *user_data)
-{
-    IOTC_UNUSED(timed_task);
-    IOTC_UNUSED(user_data);
-
-    char *publish_topic = NULL;
-    asprintf(&publish_topic, PUBLISH_TOPIC_STATE, device_id);
-    char *publish_message = NULL;
-                
-    asprintf(&publish_message, STATE_TO_PUBLISH, TAG);
 
     ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
 
@@ -240,7 +219,7 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
         asprintf(&publish_topic, PUBLISH_TOPIC_STATE, device_id);
         char *publish_message = NULL;
                     
-        asprintf(&publish_message, STATE_TO_PUBLISH, TAG);
+        asprintf(&publish_message, STATE_TO_PUBLISH, TAG, sensor_health_ok);
 
         ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
 

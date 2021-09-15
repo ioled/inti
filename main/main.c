@@ -50,6 +50,9 @@ char time_on[10] = "00:00";
 /* Time off */
 char time_off[10] = "00:00";
 
+/* Sensors health state */
+char sensor_health_ok[10] = "false";
+
 enum States
 {
     INIT,

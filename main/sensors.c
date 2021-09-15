@@ -27,10 +27,12 @@ void task_sensor(void *pvParameters)
     while (1)
     {        
         res = si7021_measure_temperature(&dev, &val);
-        if (res != ESP_OK)
+        if (res != ESP_OK) {
             printf("Could not measure temperature: %d (%s)\n", res, esp_err_to_name(res));
-        else {
+            strcpy(sensor_health_ok, "false");
+        } else {
             // printf("Temperature: %.2f\n", val);
+            strcpy(sensor_health_ok, "true");
             temperature_filter(val);
         }
 
