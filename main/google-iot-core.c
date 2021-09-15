@@ -13,8 +13,6 @@
 #define DATA_TO_PUBLISH "{\"hum\": %f, \"temp\": %f, \"duty\": %f}"
 #define STATE_TO_PUBLISH "{\"firmware_version\": \"%s\", \"sensor_healh_ok\": \"%s\"}"
 
-#define MIN_TEMP 20
-
 char *subscribe_topic_command, *subscribe_topic_config;
 
 iotc_mqtt_qos_t iotc_example_qos = IOTC_MQTT_QOS_AT_LEAST_ONCE;

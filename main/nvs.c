@@ -476,7 +476,7 @@ void read_key_pem_from_nvs(){
 }
 
 /*  Read timer configuration from NVS (ioled_data partition)  */
-void read_timer_configuration_from_nvs(){
+void read_timer_configuration_from_nvs() {
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
     

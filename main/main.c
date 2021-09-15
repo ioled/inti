@@ -70,6 +70,7 @@ void set_current_state(enum States input_current_state);
 void example_ledc_init(void);
 void apply_led_percent(float percent_from_iot_core, int print_log);
 int read_duty_from_nvs(int print_log);
+void read_timer_configuration_from_nvs();
 
 #include "constants.c"
 #include "neopixel.c"
