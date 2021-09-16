@@ -66,7 +66,6 @@ enum States current_state;
 
 // TODO: Agregar esto a un archivo de header
 void set_current_state(enum States input_current_state);
-
 void example_ledc_init(void);
 void apply_led_percent(float percent_from_iot_core, int print_log);
 int read_duty_from_nvs(int print_log);
