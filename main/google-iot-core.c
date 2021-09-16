@@ -33,7 +33,7 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     int duty = read_duty_from_nvs(1);
 
     int compare_string_with_timer_state;
-    read_timer_configuration_from_nvs();
+    read_timer_configuration_from_nvs(1);
     compare_string_with_timer_state = strcmp(timer_state,  "true");
                 
     if (compare_string_with_timer_state == 0){

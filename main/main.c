@@ -70,7 +70,7 @@ void set_current_state(enum States input_current_state);
 void example_ledc_init(void);
 void apply_led_percent(float percent_from_iot_core, int print_log);
 int read_duty_from_nvs(int print_log);
-void read_timer_configuration_from_nvs();
+void read_timer_configuration_from_nvs(int print_log);
 
 #include "constants.c"
 #include "neopixel.c"
@@ -129,7 +129,7 @@ static void init_esp(void)
     ESP_LOGI(TAG, "Initializing i2c SDA %d and SCL %d\n", SDA_GPIO, SCL_GPIO);
     ESP_ERROR_CHECK(i2cdev_init());
 
-    read_timer_configuration_from_nvs();
+    read_timer_configuration_from_nvs(1);
 
     int compare_string_with_timer_state;
     compare_string_with_timer_state = strcmp(timer_state,  "true");

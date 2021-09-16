@@ -476,7 +476,7 @@ void read_key_pem_from_nvs(){
 }
 
 /*  Read timer configuration from NVS (ioled_data partition)  */
-void read_timer_configuration_from_nvs() {
+void read_timer_configuration_from_nvs(int print_log) {
     //Initialize NVS iOLED partition
     esp_err_t err = nvs_flash_init_partition("ioled_data");
     
@@ -493,7 +493,9 @@ void read_timer_configuration_from_nvs() {
         ESP_LOGI(TAG, "Error (%s) opening NVS handle!\n", esp_err_to_name(err));
     } else {
         // Read timer state from timer property
-        ESP_LOGI(TAG, "Reading timer state from NVS ... ");
+        if(print_log == 1) {
+            ESP_LOGI(TAG, "Reading timer state from NVS ... ");
+        }
 
         char timer_state_example[10] = "false";
 
@@ -504,17 +506,25 @@ void read_timer_configuration_from_nvs() {
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "timer state = %s\n", timer_state_readed);
+                if(print_log == 1) {
+                    ESP_LOGI(TAG, "timer state = %s\n", timer_state_readed);
+                }
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
-                ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                if(print_log == 1) {
+                    ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                }
                 break;
             default :
-                ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                if(print_log == 1) {
+                    ESP_LOGE(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                }
         }
 
         // Read time on from timer property 
-        ESP_LOGI(TAG, "Reading time on from NVS ... ");
+        if(print_log == 1) {
+            ESP_LOGI(TAG, "Reading time on from NVS ... ");
+        }
 
         char time_on_example[10] = "00:00";
 
@@ -525,17 +535,25 @@ void read_timer_configuration_from_nvs() {
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "time on= %s\n", time_on_readed);
+                if(print_log == 1) {
+                    ESP_LOGI(TAG, "time on= %s\n", time_on_readed);
+                }
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
-                ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                if(print_log == 1) {
+                    ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                }
                 break;
             default :
-                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                if(print_log == 1) {
+                    ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                }
         }
 
         // Read time off from timer property 
-        ESP_LOGI(TAG, "Reading time off from NVS ... ");
+        if(print_log == 1) {
+            ESP_LOGI(TAG, "Reading time off from NVS ... ");
+        }
 
         char time_off_example[10] = "00:00";
 
@@ -546,13 +564,19 @@ void read_timer_configuration_from_nvs() {
 
         switch (err) {
             case ESP_OK:
-                ESP_LOGI(TAG, "time off= %s\n", time_off_readed);
+                if(print_log == 1) {
+                    ESP_LOGI(TAG, "time off= %s\n", time_off_readed);
+                }
                 break;
             case ESP_ERR_NVS_NOT_FOUND:
-                ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                if(print_log == 1) {
+                    ESP_LOGE(TAG, "The value is not initialized yet!\n");
+                }
                 break;
             default :
-                ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                if(print_log == 1) {
+                    ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+                }
         }
 
         // Close

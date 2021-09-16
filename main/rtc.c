@@ -32,27 +32,19 @@ void time_task()
         global_time_hour = time.tm_hour;
         
         int compare_string_with_timer_state;
-        read_timer_configuration_from_nvs();
+        read_timer_configuration_from_nvs(0);
         compare_string_with_timer_state = strcmp(timer_state,  "true");
         if (compare_string_with_timer_state == 0) {
-            ESP_LOGI(TAG, "Entro en timer true");
-
             if (y_hour[time.tm_hour] == 1) {
-                ESP_LOGI(TAG, "Entro en timer true y tiene que estar encendido");
-
                 int duty = read_duty_from_nvs(0);
-                apply_led_percent((float)(duty) / 100, 1);   
+                apply_led_percent((float)(duty) / 100, 0);   
                 
             } else {
-                ESP_LOGI(TAG, "Entro en timer true y tiene que estar apagado");
-
-                apply_led_percent(0, 1);   
+                apply_led_percent(0, 0);   
             }
         } else {
-            ESP_LOGI(TAG, "Entro en timer false");
-
             int duty = read_duty_from_nvs(0);
-            apply_led_percent((float)(duty) / 100, 1);
+            apply_led_percent((float)(duty) / 100, 0);
         }
     }
 }
