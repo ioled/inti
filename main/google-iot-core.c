@@ -213,6 +213,7 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
                                publish_telemetry_event, 300,
                                15, /*user_data=*/NULL);
 
+        /* Publish state when the device connect with IoT Core */
         char *publish_topic = NULL;
         asprintf(&publish_topic, PUBLISH_TOPIC_STATE, device_id);
         char *publish_message = NULL;
@@ -225,6 +226,30 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
                     iotc_example_qos,
                     /*callback=*/NULL, /*user_data=*/NULL);
 
+        free(publish_topic);
+        free(publish_message);
+
+        /* Publish event when the device connect with IoT Core */
+        asprintf(&publish_topic, PUBLISH_TOPIC_EVENT, device_id);
+        publish_message = NULL;
+        
+        int duty = read_duty_from_nvs(1);
+
+        int compare_string_with_timer_state;
+        read_timer_configuration_from_nvs(1);
+        compare_string_with_timer_state = strcmp(timer_state,  "true");
+                    
+        if (compare_string_with_timer_state == 0){
+            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100) * y_hour[global_time_hour]);
+        } else {
+            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100));
+        }
+
+        ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
+
+        iotc_publish(in_context_handle, publish_topic, publish_message,
+                    iotc_example_qos,
+                    /*callback=*/NULL, /*user_data=*/NULL);
         free(publish_topic);
         free(publish_message);
 
