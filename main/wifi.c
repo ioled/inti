@@ -106,9 +106,9 @@ void wifi_init_sta(void)
     } else if (bits & WIFI_FAIL_BIT) {
         ESP_LOGE(TAG, "Failed to connect to SSID: %s, password: %s", wifi_ssid, wifi_pass);
         set_current_state(ERROR);
-        // current_state = ERROR;
     } else {
         ESP_LOGE(TAG, "UNEXPECTED EVENT");
+        set_current_state(ERROR);
     }
 
     /* The event will not be processed after unregister */
