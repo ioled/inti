@@ -350,7 +350,7 @@ static void mqtt_task(void *pvParameters)
         implementation should handle both successful connections and
         unsuccessful connections as well as disconnections. */
     const uint16_t connection_timeout = 0;
-    const uint16_t keepalive_timeout = 20;
+    const uint16_t keepalive_timeout = 60;
 
     /* Generate the client authentication JWT, which will serve as the MQTT
      * password. */
@@ -358,7 +358,7 @@ static void mqtt_task(void *pvParameters)
     size_t bytes_written = 0;
     iotc_state_t state = iotc_create_iotcore_jwt(
                              CONFIG_GIOT_PROJECT_ID,
-                             /*jwt_expiration_period_sec=*/3600, &iotc_connect_private_key_data, jwt,
+                             /*jwt_expiration_period_sec=*/86400, &iotc_connect_private_key_data, jwt,
                              IOTC_JWT_SIZE, &bytes_written);
 
     if (IOTC_STATE_OK != state) {
