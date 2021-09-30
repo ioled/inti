@@ -27,7 +27,7 @@ char wifi_pass[64] = "dkYxgw2C4mmm";
 char wifi_mode[10] = "STA";
 
 /* Device id */
-char device_id[15] = "esp32_F83730";
+char device_id[15] = "esp32_F82D0C";
 
 /* Private key */
 char key_in_c[250];
