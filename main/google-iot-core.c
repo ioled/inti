@@ -349,7 +349,7 @@ static void mqtt_task(void *pvParameters)
         callback function after the connection request completes, and its
         implementation should handle both successful connections and
         unsuccessful connections as well as disconnections. */
-    const uint16_t connection_timeout = 10;
+    const uint16_t connection_timeout = 0;
     const uint16_t keepalive_timeout = 60;
 
     /* Generate the client authentication JWT, which will serve as the MQTT
