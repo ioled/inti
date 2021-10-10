@@ -266,6 +266,8 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
     case IOTC_CONNECTION_STATE_OPEN_FAILED:
         ESP_LOGE(TAG, "ERROR! Connection has failed reason %d", state);
 
+        set_current_state(ERROR);
+
         /* exit it out of the application by stopping the event loop. */
         iotc_events_stop();
         break;
@@ -300,7 +302,6 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
             with previously set configuration, which has been provided
             to this callback in the conn_data structure. */
 
-            // Change current state to: SEARCHING_NETWORK
             set_current_state(SEARCHING_NETWORK);
 
             iotc_connect(
