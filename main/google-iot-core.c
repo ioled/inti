@@ -10,7 +10,7 @@
 #define SUBSCRIBE_TOPIC_CONFIG "/devices/%s/config"
 #define PUBLISH_TOPIC_EVENT "/devices/%s/events"
 #define PUBLISH_TOPIC_STATE "/devices/%s/state"
-#define DATA_TO_PUBLISH "{\"hum\": %f, \"temp\": %f, \"duty\": %f}"
+#define DATA_TO_PUBLISH "{\"hum\": %f, \"temp\": %f, \"duty\": %f, \"rtc_time\": \"%d-%d-%d %d:%d:%d\"}"
 #define STATE_TO_PUBLISH "{\"firmware_version\": \"%s\", \"sensor_healh_ok\": \"%s\", \"rtc_time\": \"%d-%d-%d %d:%d:%d\"}"
 
 char *subscribe_topic_command, *subscribe_topic_config;
@@ -40,9 +40,9 @@ void publish_telemetry_event(iotc_context_handle_t context_handle,
     compare_string_with_timer_state = strcmp(timer_state,  "true");
                 
     if (compare_string_with_timer_state == 0){
-        asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100) * y_hour[global_time_hour]);
+        asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100) * y_hour[global_time_hour], global_time_year, global_time_mon, global_time_mday, global_time_hour, global_time_min, global_time_sec);
     } else {
-        asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100));
+        asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100), global_time_year, global_time_mon, global_time_mday, global_time_hour, global_time_min, global_time_sec);
     }
 
     ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
@@ -149,9 +149,9 @@ void iotc_mqttlogic_subscribe_config_callback(
         compare_string_with_timer_state = strcmp(timer_state,  "true");
                     
         if (compare_string_with_timer_state == 0){
-            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(dutyFromMemory) / 100) * y_hour[global_time_hour]);
+            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(dutyFromMemory) / 100) * y_hour[global_time_hour], global_time_year, global_time_mon, global_time_mday, global_time_hour, global_time_min, global_time_sec);
         } else {
-            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(dutyFromMemory) / 100));
+            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(dutyFromMemory) / 100), global_time_year, global_time_mon, global_time_mday, global_time_hour, global_time_min, global_time_sec);
         }
 
         ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
@@ -269,9 +269,9 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
         compare_string_with_timer_state = strcmp(timer_state,  "true");
                     
         if (compare_string_with_timer_state == 0){
-            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100) * y_hour[global_time_hour]);
+            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100) * y_hour[global_time_hour], global_time_year, global_time_mon, global_time_mday, global_time_hour, global_time_min, global_time_sec);
         } else {
-            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100));
+            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(duty) / 100), global_time_year, global_time_mon, global_time_mday, global_time_hour, global_time_min, global_time_sec);
         }
 
         ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
