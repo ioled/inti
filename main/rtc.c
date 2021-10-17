@@ -1,6 +1,12 @@
 #include <ds3231.h>
 
+int global_time_year;
+int global_time_mon;
+int global_time_mday;
+
 int global_time_hour;
+int global_time_min;
+int global_time_sec;
 
 void time_task()
 {
@@ -29,7 +35,13 @@ void time_task()
 
         // printf("%04d-%02d-%02d %02d:%02d:%02d \n", time.tm_year + 1900, time.tm_mon + 1,
         //     time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
+        global_time_year = time.tm_year + 1900;
+        global_time_mon = time.tm_mon + 1;
+        global_time_mday = time.tm_mday;
+        
         global_time_hour = time.tm_hour;
+        global_time_min = time.tm_min;
+        global_time_sec = time.tm_sec;
         
         int compare_string_with_timer_state;
         read_timer_configuration_from_nvs(0);

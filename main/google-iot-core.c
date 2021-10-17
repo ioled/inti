@@ -20,6 +20,7 @@ static iotc_timed_task_handle_t delayed_publish_task =
     IOTC_INVALID_TIMED_TASK_HANDLE;
 iotc_context_handle_t iotc_context = IOTC_INVALID_CONTEXT_HANDLE;
 
+/* Publish message in topic event */
 void publish_telemetry_event(iotc_context_handle_t context_handle,
                              iotc_timed_task_handle_t timed_task, void *user_data)
 {
