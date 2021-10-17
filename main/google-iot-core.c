@@ -132,6 +132,32 @@ void iotc_mqttlogic_subscribe_config_callback(
         end: 
             cJSON_Delete(json);                
         free(sub_message);
+
+        // Finish of message received from IoT Core
+        /* Publish event when receive configuration from IoT Core*/
+        char *publish_topic = NULL;
+        asprintf(&publish_topic, PUBLISH_TOPIC_EVENT, device_id);
+
+        char *publish_message = NULL;
+
+        int dutyFromMemory = read_duty_from_nvs(1);
+
+        read_timer_configuration_from_nvs(1);
+        compare_string_with_timer_state = strcmp(timer_state,  "true");
+                    
+        if (compare_string_with_timer_state == 0){
+            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(dutyFromMemory) / 100) * y_hour[global_time_hour]);
+        } else {
+            asprintf(&publish_message, DATA_TO_PUBLISH, humidity, temperature, ((float)(dutyFromMemory) / 100));
+        }
+
+        ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
+
+        iotc_publish(in_context_handle, publish_topic, publish_message,
+                    iotc_example_qos,
+                    /*callback=*/NULL, /*user_data=*/NULL);
+        free(publish_topic);
+        free(publish_message);
     }
 }
 
