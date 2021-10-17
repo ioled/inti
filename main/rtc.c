@@ -27,8 +27,8 @@ void time_task()
             continue;
         }
 
-        printf("%04d-%02d-%02d %02d:%02d:%02d \n", time.tm_year + 1900, time.tm_mon + 1,
-            time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
+        // printf("%04d-%02d-%02d %02d:%02d:%02d \n", time.tm_year + 1900, time.tm_mon + 1,
+        //     time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
         global_time_hour = time.tm_hour;
         
         int compare_string_with_timer_state;
