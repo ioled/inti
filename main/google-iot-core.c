@@ -11,7 +11,7 @@
 #define PUBLISH_TOPIC_EVENT "/devices/%s/events"
 #define PUBLISH_TOPIC_STATE "/devices/%s/state"
 #define DATA_TO_PUBLISH "{\"hum\": %f, \"temp\": %f, \"duty\": %f}"
-#define STATE_TO_PUBLISH "{\"firmware_version\": \"%s\", \"sensor_healh_ok\": \"%s\"}"
+#define STATE_TO_PUBLISH "{\"firmware_version\": \"%s\", \"sensor_healh_ok\": \"%s\", \"rtc_time\": \"%d-%d-%d %d:%d:%d\"}"
 
 char *subscribe_topic_command, *subscribe_topic_config;
 
@@ -20,7 +20,9 @@ static iotc_timed_task_handle_t delayed_publish_task =
     IOTC_INVALID_TIMED_TASK_HANDLE;
 iotc_context_handle_t iotc_context = IOTC_INVALID_CONTEXT_HANDLE;
 
-/* Publish message in topic event */
+/** Publish message in topic event 
+ * event: {"hum": 58.876556, "temp": 18.069016, "duty": 0.100000}
+*/
 void publish_telemetry_event(iotc_context_handle_t context_handle,
                              iotc_timed_task_handle_t timed_task, void *user_data)
 {
@@ -245,7 +247,7 @@ void on_connection_state_changed(iotc_context_handle_t in_context_handle,
         asprintf(&publish_topic, PUBLISH_TOPIC_STATE, device_id);
         char *publish_message = NULL;
                     
-        asprintf(&publish_message, STATE_TO_PUBLISH, TAG, sensor_health_ok);
+        asprintf(&publish_message, STATE_TO_PUBLISH, TAG, sensor_health_ok, global_time_year, global_time_mon, global_time_mday, global_time_hour, global_time_min, global_time_sec);
 
         ESP_LOGI(TAG, "Publishing msg \"%s\" to topic: \"%s\"\n", publish_message, publish_topic);
 
